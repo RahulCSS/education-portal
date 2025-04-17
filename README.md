@@ -1,2 +1,2 @@
-# education-portal
+# Education-portal
 LMS using MERN Stack
