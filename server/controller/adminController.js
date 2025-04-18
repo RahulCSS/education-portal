@@ -51,8 +51,43 @@ const registerUser = async (req, res) => {
         console.error("Error registering user:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
-}
+};
+
+// Update user profile
+const updateUser = async (req,res) => {
+    const userId = req.params.id;
+    const { email, phone, ...updatevalues } = req.body;
+    try{
+        // 1. Validating fields
+        if(email &&!isValidEmail(email)){
+            return res.status(400).json({ message: "Please enter a valid email" });
+        }
+        if(phone && !isValidPhone(phone)){
+            return res.status(400).json({ message: "Please enter a valid phone number" });
+        }
+
+        // 2. Check if user exists
+        const user = await userModel.findById(userId);
+        if(!user){
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        // 3. Update user
+        const updateUser = await userModel.findByIdAndUpdate(
+            userId,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if(!updateUser){
+            return res.status(400).json({ message: "Error updating user" });
+        }
+        return res.status(200).json({ message: "User updated successfully" });
+    }catch (error) {
+        console.error("Error updating user:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 module.exports = {
-    registerUser,
+    registerUser, updateUser
 };
