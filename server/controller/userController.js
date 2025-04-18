@@ -1,6 +1,8 @@
 const userModel = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Validators
 const isValidEmail = (email) => {
@@ -55,6 +57,45 @@ const registerUser = async (req,res) => {
     }
 }
 
+// Login a user
+const loginUser = async (req, res) => {
+    const {email,password} = req.body;
+    try{
+        // 1. Check if all required fields are provided
+        if(!email || !password){
+            return res.status(400).json({ message: "Please fill all the fields" });
+        }
+
+        // 2. Check if user exists
+        const user = await userModel.findOne({ email });
+        if(!user){
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        // 3. Check if password is correct
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch){
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        // 4. Generate a token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        user.token.token = token;
+        await user.save();
+        const { password:_,token:__, updatedAt:___,__v:____, ...userWithoutPassword } = user._doc;
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 60 * 60 * 1000
+        });
+        return res.status(200).json({ message: "User loggedin successfully" , userData: userWithoutPassword });
+    }catch (error) {
+        console.error("Error logging in user:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 module.exports = {
-    registerUser,
+    registerUser, loginUser
 };

@@ -1,3 +1,4 @@
+const e = require("express");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -20,6 +21,10 @@ const userSchema = new mongoose.Schema({
     profile_image: { type: String },
     grade: { type: Number, default: 0 },
     bio: { type: String , default: "" },
+    token: { 
+        token: { type: String, default: "" },
+        created_at: { type: Date, default: Date.now, expires: 3600 }
+     },
 }, {timestamps: true, minimize: false});
 
 const userModel = mongoose.model("User", userSchema);
