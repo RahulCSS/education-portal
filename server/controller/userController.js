@@ -18,6 +18,23 @@ const isValidPhone = (phone) => {
     return phoneRegex.test(phone);
 };
 
+// Token generators
+const generateAccessToken = (user) => {
+    return jwt.sign({ id: user._id , role: user.role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+};
+const generateRefreshToken = (user) => {
+    return jwt.sign({ id: user._id , name: user.last_name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '6h' });
+};
+
+// Hashing password/Token 
+const hashValue = async (value) => {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(value, salt);
+};
+const compareHashValue = async (value, hashedValue) => {
+    return await bcrypt.compare(value, hashedValue);
+}
+
 // Register a new user
 const registerUser = async (req,res) => {
     const {first_name, last_name, email, password } = req.body;
@@ -42,8 +59,7 @@ const registerUser = async (req,res) => {
         }
 
         // 4. Hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await hashValue(password);
 
         // 5. Create a new user
         const newUser = new userModel({
@@ -77,21 +93,36 @@ const loginUser = async (req, res) => {
         }
 
         // 3. Check if password is correct
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = compareHashValue(password, user.password);
         if(!isMatch){
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
         // 4. Generate a token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        user.token.token = token;
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+
+        // 5. Hash and save the refresh token in the database
+        const hashedRefreshToken = await hashValue(refreshToken);
+        user.token= {
+            refresh_token: hashedRefreshToken,
+            createdAt: Date.now()
+        }
         await user.save();
-        const { password:_,token:__, updatedAt:___,__v:____, ...userWithoutPassword } = user._doc;
-        res.cookie("token", token, {
+        const { password:_, token:__, updatedAt:___, __v:____, ...userWithoutPassword } = user._doc;
+
+        // 6. Set the access & refresh token in the cookie
+        res.cookie("access_token", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "strict",
-            maxAge: 60 * 60 * 1000
+            maxAge: 15 * 1000
+        });
+        res.cookie("refresh_token", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 6 * 60 * 60 * 1000
         });
         return res.status(200).json({ message: "User loggedin successfully" , userData: userWithoutPassword });
     }catch (error) {

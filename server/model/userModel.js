@@ -1,6 +1,11 @@
 const e = require("express");
 const mongoose = require("mongoose");
 
+const  tokenSchema = new mongoose.Schema({
+    refresh_token: { type: String, default: "" },
+    createdAt: { type: Date, default: Date.now, expires: 21600 }
+}, { _id : false });
+
 const userSchema = new mongoose.Schema({
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
@@ -22,8 +27,8 @@ const userSchema = new mongoose.Schema({
     grade: { type: Number, default: 0 },
     bio: { type: String , default: "" },
     token: { 
-        token: { type: String, default: "" },
-        created_at: { type: Date, default: Date.now, expires: 3600 }
+        type: tokenSchema,
+        default: undefined
      },
 }, {timestamps: true, minimize: false});
 
