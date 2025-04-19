@@ -1,4 +1,3 @@
-const e = require("express");
 const mongoose = require("mongoose");
 
 const  tokenSchema = new mongoose.Schema({
@@ -28,7 +27,7 @@ const userSchema = new mongoose.Schema({
     bio: { type: String , default: "" },
     token: { 
         type: tokenSchema,
-        default: undefined
+        default: undefined,
      },
 }, {timestamps: true, minimize: false});
 

@@ -20,10 +20,10 @@ const isValidPhone = (phone) => {
 
 // Token generators
 const generateAccessToken = (user) => {
-    return jwt.sign({ id: user._id , role: user.role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    return jwt.sign({ id: user._id , role: user.role }, process.env.JWT_SECRET_ACCESS_TOKEN, { expiresIn: '15m' });
 };
 const generateRefreshToken = (user) => {
-    return jwt.sign({ id: user._id , name: user.last_name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '6h' });
+    return jwt.sign({ id: user._id , name: user.last_name, role: user.role }, process.env.JWT_SECRET_REFRESH_TOKEN, { expiresIn: '6h' });
 };
 
 // Hashing password/Token 
