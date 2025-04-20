@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: String , unique: true, sparse: true },
     address: { addressSchema },
     user_id: { type: String, unique: true, sparse: true },
-    role: { type: String, default: ""},
+    role: { type: String, default: "Student" , enum: ["Admin", "Student", "Tutor"] },
     enrolled_courses: { type: Array, default: [] },
     created_courses: { type: Array, default: [] },
     profile: { profileSchema },

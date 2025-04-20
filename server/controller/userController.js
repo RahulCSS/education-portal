@@ -165,7 +165,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            path: "/auth/refresh",
+            path: "/",
             maxAge: 6 * 60 * 60 * 1000
         });
         return res.status(200).json({ message: "User loggedin successfully" , userData: userWithoutPassword });
