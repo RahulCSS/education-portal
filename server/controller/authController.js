@@ -6,7 +6,7 @@ const userModel = require('../model/userModel');
 
 // Verify token
 const verifyToken = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET_ACCESS_TOKEN);
+    return jwt.verify(token, process.env.JWT_SECRET_REFRESH_TOKEN);
 };
 
 // Validate hashed refresh token
@@ -27,6 +27,7 @@ const refreshToken = async (req, res) => {
     }
     try {
         const payload = verifyToken(refreshToken);
+        console.log(payload.id);
         const user = await userModel.findById(payload.id);
 
         // 1. Check if user exists
@@ -51,7 +52,7 @@ const refreshToken = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            maxAge: 15 * 1000
+            maxAge: 15 * 60 * 1000
         });
         return res.status(200).json({ message: 'Access token refreshed' });
     } catch (error) {

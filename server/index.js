@@ -3,7 +3,6 @@ const cors = require ('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 const userRoute = require('./route/userRoute');
-const adminRoute = require('./route/adminRoute');
 const authRoute = require('./route/authRoute');
 
 // Imports
@@ -38,5 +37,4 @@ app.listen(port,() => {
 
 // API routes
 app.use('/user', userRoute);
-app.use('/admin', adminRoute);
 app.use('/auth', authRoute);
