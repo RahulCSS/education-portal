@@ -1,8 +1,16 @@
 import React from 'react'
+import { Routes, Route } from "react-router";
+import Home from './pages/home/home'
+import Navbar from './components/navbar/Navbar';
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />}/>
+      </Routes>
+    </div>
   )
 }
 
