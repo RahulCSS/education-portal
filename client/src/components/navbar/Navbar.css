@@ -1,59 +1,63 @@
-.navbar{
-    display: flex;
-    align-items:center;
-    justify-content: space-between;
-    width:100vw;
-    height:3rem;
-    position: fixed;
-    top:0%;
-    padding: 0.5rem 2rem;
-    background-color: #FFFFFF;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  height: 3rem;
+  position: fixed;
+  top: 0%;
+  padding: 0.5rem 2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 7px 12px 0px;
 }
 
-.title{
-    display: flex;
-    align-items: center;
-    gap:0.5rem;
-    cursor: pointer;
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
-.title img{
-    width: 2rem;
-    height:2rem;
+.title img {
+  width: 2rem;
+  height: 2rem;
 }
 
 .title a:nth-child(2) {
-    font-family: "Nunito";
-    font-size: 2rem;
-    font-weight: 300;
+  font-family: "Nunito";
+  font-size: 2rem;
+  font-weight: 300;
 }
 
-.title a:nth-child(3){
-    font-family: "Happy Monkey";
-    font-size: 2rem;
-    font-weight: 400;
-    font-style: normal;
+.title a:nth-child(3) {
+  font-family: "Happy Monkey";
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.menu{
-    display: flex;
-    align-items:center;
-    justify-content: space-between;
-    gap:2rem;
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-.menu li{
-    list-style: none;
-    cursor: pointer;
+.menu li {
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
-.profile{
-    display: flex;
-    align-items: center;
-    gap:1rem;
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
-.profile a svg{
-    width:1.5rem;
-    height:1.5rem;
-    cursor: pointer;
+
+.profile a svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
 }
