@@ -41,23 +41,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
 }
 
 .menu li {
   list-style: none;
   cursor: pointer;
   font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+}
+
+.menu li:hover{
+  border: 1px dotted var(--mildlavie-color);
+  background-color: var(--shoopywhite-color);
 }
 
 .profile {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+.profile a{
+  padding: 0.5rem;
+  position: relative;
 }
 
 .profile a svg {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+}
+
+.profile a:hover{
+  background-color: var(--shoopywhite-color);
+  border-radius: 50%;
 }

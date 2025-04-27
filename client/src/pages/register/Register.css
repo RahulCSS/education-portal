@@ -1,0 +1,128 @@
+.register-container{
+    width:100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white-color);
+}
+
+.register{
+    width: 1320px;
+    height: 800px;
+    display: flex;
+}
+
+.register-poster{
+    width: 70%;
+    height:100%;
+}
+
+.register-poster img{
+    object-fit:cover;
+}
+
+
+.register-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:30%;
+}
+
+.register-form p:first-child{
+    font-size: 2.5rem;
+    color: var(--stronglavie-color);
+}
+
+.register-form > p {
+    padding: 1rem 0;
+    width:100%;
+    text-align:center;
+}
+
+.form{
+    position: relative;
+    width: 100%;
+    height: 4rem;
+    margin: 1rem 0rem;
+}
+
+.form input{
+    position: absolute;
+    width: 100%;
+    height:4rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    background: transparent;
+    border: 1px solid var(--ashwhite-color);
+}
+
+.form label{
+    position: absolute;
+    top: 1.5rem;
+    left: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.form input:focus{
+    outline: none;
+    background-color: var(--snoopywhite-color);
+    border-color: var(--mildlavie-color);
+    border-radius: 5px;
+}
+
+.form input:focus + label{
+    transform: translate(-0.75rem, -1.25rem) scale(0.8);
+    color: var(--stronglavie-color);
+}
+
+.register-form button{
+    width: 100%;
+    height: 3rem;
+    padding: .5rem;
+    font-size: 1.2rem;
+    background-color: var(--snoopywhite-color);
+    border: 1px solid var(--mildlavie-color);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin: 1rem 0;
+}
+
+.register-form button:hover{
+    background-color: var(--mildlavie-color);
+    color: var(--white-color);
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding: 1rem 0;
+  }
+  
+.line > hr{
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--ashwhite-color); 
+}
+  
+.line span {
+    margin: 0 0.5rem; 
+}
+
+.register-form p:nth-last-child{
+    padding: 1rem 0;
+    background-color: var(--ashwhite-color);
+    color:aliceblue;
+}
+
+.register-form p a {
+    font-weight: 600;
+    color: var(--darkblue-color);
+    text-decoration: underline;
+    margin: 0 0.5rem;
+    cursor: pointer;
+}

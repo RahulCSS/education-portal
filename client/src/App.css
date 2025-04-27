@@ -5,8 +5,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 :root{
-    background-color: #F5F5F7;
+    --white-color: #FFFFFF;
+    --ashwhite-color: #E5E5E5;
+    --snowwhite-color: #F5F5F7;
+    --snoopywhite-color: #F2F0F6;
+    --mildlavie-color: #BB9FD7;
+    --stronglavie-color: #A535F0;
+    --darkblue-color: #655CF4;
+
 }
+
 *{
     padding: 0;
     margin: 0;
