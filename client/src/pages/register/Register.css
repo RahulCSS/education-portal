@@ -113,10 +113,8 @@
     margin: 0 0.5rem; 
 }
 
-.register-form p:nth-last-child{
-    padding: 1rem 0;
-    background-color: var(--ashwhite-color);
-    color:aliceblue;
+.register-form p:last-child{
+    background-color: var(--snowwhite-color);
 }
 
 .register-form p a {

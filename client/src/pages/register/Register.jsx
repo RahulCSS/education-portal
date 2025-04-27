@@ -16,7 +16,7 @@ const Register = () => {
                 </div>
                 <div className="form form-email">
                     <input id="email" required></input>
-                    <label for="email">E mail</label>
+                    <label for="email">Email</label>
                 </div>
                 <button>Sign up</button>
                 <div className="line">
