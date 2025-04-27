@@ -20,13 +20,11 @@ const profileSchema = new mongoose.Schema({
 }, { _id : false });
 
 const userSchema = new mongoose.Schema({
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    fullname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String , unique: true, sparse: true },
     address: { addressSchema },
-    user_id: { type: String, unique: true, sparse: true },
     role: { type: String, default: "Student" , enum: ["Admin", "Student", "Tutor"] },
     enrolled_courses: { type: Array, default: [] },
     created_courses: { type: Array, default: [] },

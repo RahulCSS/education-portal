@@ -48,7 +48,7 @@
     margin: 1rem 0rem;
 }
 
-.form input{
+.form input, select{
     position: absolute;
     width: 100%;
     height:4rem;
@@ -73,7 +73,7 @@
     border-radius: 5px;
 }
 
-.form input:focus + label{
+.form input:focus + label, .focused{
     transform: translate(-0.75rem, -1.25rem) scale(0.8);
     color: var(--stronglavie-color);
 }

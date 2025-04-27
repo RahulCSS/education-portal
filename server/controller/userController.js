@@ -37,7 +37,7 @@ const compareHashValue = async (value, hashedValue) => {
 
 // Register a new user
 const signupUser = async (req,res) => {
-    const {first_name, last_name, email, password } = req.body;
+    const {full_name, email, password } = req.body;
     try{
         // 1. Check if all required fields are provided
         if(!first_name || !last_name || !email || !password){
@@ -63,8 +63,7 @@ const signupUser = async (req,res) => {
 
         // 5. Create a new user
         const newUser = new userModel({
-            first_name,
-            last_name,
+            full_name,
             email,
             password: hashedPassword,
             role: "Student"
@@ -79,7 +78,7 @@ const signupUser = async (req,res) => {
 
 // Register a new user
 const registerUser = async (req,res) => {
-    const {first_name, last_name, email, password, role} = req.body;
+    const {full_name, email, password, role} = req.body;
     try{
         // 1. Check if all required fields are provided
         if(!first_name || !last_name || !email || !password){
@@ -105,8 +104,7 @@ const registerUser = async (req,res) => {
 
         // 6. Create a new user
         const newUser = new userModel({
-            first_name,
-            last_name,
+            full_name,
             email,
             password: hashedPassword,
             role,
