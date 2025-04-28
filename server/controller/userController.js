@@ -81,21 +81,21 @@ const registerUser = async (req,res) => {
     try{
         // 1. Check if all required fields are provided
         if(!fullname || !email || !password){
-            return res.status(400).json({ message: "Please fill all the fields" });
+            return res.status(400).json({ success: false, message: "Please fill all the fields" });
         }
 
         // 2. Validating fields
         if(!isValidEmail(email)){
-            return res.status(400).json({ message: "Please enter a valid email" });
+            return res.status(422).json({ success: false, message: "Please enter a valid email" });
         }
         if(!isValidPassword(password)){
-            return res.status(400).json({ message: "Password must be at least 8 characters long, must contain at least one uppercase letter, one lowercase letter, and one number" });
+            return res.status(422).json({ success: false, message: "Password must be at least 8 characters long, must contain at least one uppercase letter, one lowercase letter, and one number" });
         }
 
         // 3. If all fields valid , Check if email already exists
         const userExists = await userModel.findOne({ email });
         if(userExists){
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(409).json({ success: false, message: "User already exists" });
         }
 
         // 5. Hash the password
@@ -109,7 +109,7 @@ const registerUser = async (req,res) => {
             role,
         });
         await newUser.save();
-        return res.status(201).json({ message: "User registered successfully" });
+        return res.status(201).json({ success: true, message: "User registered successfully" });
     }catch (error) {
         console.error("Error registering user:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -122,19 +122,19 @@ const loginUser = async (req, res) => {
     try{
         // 1. Check if all required fields are provided
         if(!email || !password){
-            return res.status(400).json({ message: "Please fill all the fields" });
+            return res.status(400).json({ success: false, message: "Please fill all the fields" });
         }
 
         // 2. Check if user exists
         const user = await userModel.findOne({ email });
         if(!user){
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(404).json({ success: false, message: "User does not exist" });
         }
 
         // 3. Check if password is correct
         const isMatch = compareHashValue(password, user.password);
         if(!isMatch){
-            return res.status(400).json({ message: "Invalid credentials" });
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
 
         // 4. Generate a token
@@ -153,19 +153,19 @@ const loginUser = async (req, res) => {
         // 6. Set the access & refresh token in the cookie
         res.cookie("access_token", accessToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: false,
+            sameSite: "Lax",
             path: "/",
             maxAge: 15 * 60 * 1000
         });
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: false,
+            sameSite: "Lax",
             path: "/",
             maxAge: 6 * 60 * 60 * 1000
         });
-        return res.status(200).json({ message: "User loggedin successfully" , userData: userWithoutPassword });
+        return res.status(200).json({ success: true, message: "User loggedin successfully" , userData: userWithoutPassword });
     }catch (error) {
         console.error("Error logging in user:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -179,16 +179,16 @@ const updateUser = async (req,res) => {
     try{
         // 1. Validating fields
         if(email &&!isValidEmail(email)){
-            return res.status(400).json({ message: "Please enter a valid email" });
+            return res.status(422).json({ success: false, message: "Please enter a valid email" });
         }
         if(phone && !isValidPhone(phone)){
-            return res.status(400).json({ message: "Please enter a valid phone number" });
+            return res.status(422).json({ success: false, message: "Please enter a valid phone number" });
         }
 
         // 2. Check if user exists
         const user = await userModel.findById(userId);
         if(!user){
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(404).json({ success: false, message: "User does not exist" });
         }
 
         // 3. Update user
@@ -198,9 +198,9 @@ const updateUser = async (req,res) => {
             { new: true, runValidators: true }
         );
         if(!updateUser){
-            return res.status(400).json({ message: "Error updating user" });
+            return res.status(500).json({ success: false, message: "Error updating user" });
         }
-        return res.status(200).json({ message: "User updated successfully" });
+        return res.status(200).json({ success: true, message: "User updated successfully" });
     }catch (error) {
         console.error("Error updating user:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -213,7 +213,7 @@ const logoutUser = async (req,res) => {
         // 1. Check if the user exists
         const user = await userModel.findById(userId);
         if(!user){
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(404).json({ success: false, message: "User does not exist" });
         }
 
         // 3. Delete the refresh token from the database
@@ -223,7 +223,7 @@ const logoutUser = async (req,res) => {
         // 4. Clear the cookies
         res.clearCookie("access_token");
         res.clearCookie("refresh_token");
-        return res.status(200).json({ message: "User logged out successfully" });
+        return res.status(200).json({ success: true, message: "User logged out successfully" });
     }catch(error){
         console.error("Error logging out user:", error);
         return res.status(500).json({ message: "Error logging out user" });

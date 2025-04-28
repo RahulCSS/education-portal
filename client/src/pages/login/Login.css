@@ -69,6 +69,23 @@ form{
     transition: all 0.3s ease;
 }
 
+.loginform span{
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+}
+
+.loginform span svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.eye{
+    cursor: pointer;
+    color: var(--ashwhite-color);
+}
+
+
 .loginform input:focus{
     outline: none;
     background-color: var(--snoopywhite-color);

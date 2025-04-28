@@ -5,7 +5,7 @@ import MainLayout from './layouts/Mainlayout';
 import Home from './pages/home/home'
 import AuthLayout from './layouts/AuthLayout';
 import Login from './pages/login/Login';
-import Register from './pages/register/Register';
+import Signup from './pages/signup/Signup'
 import Toast from './components/toast/Toast';
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>
       <Toast />

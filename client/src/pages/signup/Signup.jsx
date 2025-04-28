@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./Register.css";
+import "./Signup.css";
 import { CheckCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
 import { SignupUser } from '../../apicalls/user'
 import { useDispatch } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
 import { useNavigate } from "react-router";
 
-const Register = () => {
+const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -183,4 +183,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;

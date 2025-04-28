@@ -1,77 +1,82 @@
 import React, { useState } from "react";
 import "./Login.css";
+import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
+import { LoginUser } from '../../apicalls/user'
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../store/toastSlice';
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // *** Local States ***
   // FormData
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   // Input focus & label transition
   const [isFocused, setIsFocused] = useState({
-    isEmail: false,
-    isPassword: false,
+    isemail: false,
+    ispassword: false,
   });
 
-  // Success & Error messages
-  const [messages, setMessages] = useState([]);
+  const [passwordVisible,setPasswordVisible] = useState(false);
 
   // *** Handlers ***
   // Handles input value changes & stores in local state
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+    const updatedFormData = {
       ...formData,
       [name]: value,
-    });
+    };
+  
+    setFormData(updatedFormData);
 
-    if (name === "email") {
-      if (value.length > 0) {
-        setIsFocused({
+    if(value.length > 0){
+      setIsFocused({
           ...isFocused,
-          isEmail: true,
-        });
-      } else if (value.length == 0) {
+          [`is${name}`]: true,
+      });
+    } else if(value.length == 0){
         setIsFocused({
-          ...isFocused,
-          isEmail: false,
+            ...isFocused,
+            [`is${name}`]: false,
         });
-      }
-    } else if (name === "password") {
-      if (value.length > 0) {
-        setIsFocused({
-          ...isFocused,
-          isPassword: true,
-        });
-      } else if (value.length == 0) {
-        setIsFocused({
-          ...isFocused,
-          isPassword: false,
-        });
-      }
     }
   };
 
-  // Handles validation of formdata before submission;
+  // Handles password visibility
+  const togglevisiblity = () =>{
+    setPasswordVisible(!passwordVisible);
+  }
 
-  // Handles submission of formdata
-  const handleSubmit = async () => {
-    console.log(formData);
-    // try{
-    //     const response = await LoginUser(values);
-    //     if(response.success){
-            
-            
-    //     }else{
-            
-    //     }
-    // }catch(error){
-        
-    // }
-    //form.resetFields();
+  const handleSignUp = ()=>{
+    navigate('/signup');
+  };
+
+   // Handles submission of formdata
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+        const response = await LoginUser(formData);
+        console.log(response);
+        if(response.success === true){
+            dispatch(showToast({ message: `${response.message}`, type: 'success' }));
+            setFormData(formData);
+            setIsFocused(isFocused);
+            setTimeout(() => {
+              navigate('/');
+            }, 500);
+        }else{
+            dispatch(showToast({ message: `${response.message}`, type: 'info' }));
+        }
+    }catch(error){
+        dispatch(showToast({ message: `${error.message}`, type: 'error'}));
+    }
   };
 
   return (
@@ -95,7 +100,7 @@ const Login = () => {
                 required
               ></input>
               <label
-                className={isFocused.isEmail ? "focused" : ""}
+                className={isFocused.isemail ? "focused" : ""}
                 htmlFor="email"
               >
                 Email
@@ -105,19 +110,23 @@ const Login = () => {
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 minLength="8"
-                title="Please enter password of length 8"
+                title="Please enter password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                 value={formData.password}
                 onChange={handleChange}
                 required
               ></input>
               <label
-                className={isFocused.isPassword ? "focused" : ""}
+                className={isFocused.ispassword ? "focused" : ""}
                 htmlFor="password"
               >
                 Password
               </label>
+              <span className="eye" onClick={togglevisiblity}>
+              {passwordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                </span>
             </div>
             <button>Log in</button>
           </form>
@@ -128,7 +137,7 @@ const Login = () => {
           </div>
           <p>Signin with google</p>
           <p>
-            Don't have an account.<a>Sign up</a>
+            Don't have an account.<a onClick={handleSignUp}>Sign up</a>
           </p>
         </div>
       </div>
