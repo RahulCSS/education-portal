@@ -4,9 +4,11 @@ import { CheckCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-ic
 import { SignupUser } from '../../apicalls/user'
 import { useDispatch } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
+import { useNavigate } from "react-router";
 
 const Register = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
   // *** Local States ***
   // FormData
@@ -64,6 +66,9 @@ const Register = () => {
         const response = await SignupUser(updatedFormData);
         if(response.success === true){
             dispatch(showToast({ message: `${response.message}`, type: 'success' }));
+            setFormData(formData);
+            setIsFocused(isFocused);
+            navigate('/login');
         }else{
             dispatch(showToast({ message: `${response.message}`, type: 'info' }));
         }
