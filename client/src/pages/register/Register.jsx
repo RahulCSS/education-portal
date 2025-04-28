@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import "./Register.css";
+import { CheckCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
+import { SignupUser } from '../../apicalls/user'
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../store/toastSlice';
 
 const Register = () => {
+    const dispatch = useDispatch();
+
   // *** Local States ***
   // FormData
   const [formData, setFormData] = useState({
@@ -19,17 +25,18 @@ const Register = () => {
     isconfirmpassword: false,
   });
 
-  // To check password match
-  const [passwordMatch, setPasswordMatch] = useState('false');
+  const [passwordVisible,setPasswordVisible] = useState(false);
 
   // *** Handlers ***
   // Handles input value changes & stores in local state
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const updatedFormData = {
+        ...formData,
+        [name]: value,
+      };
+    
+    setFormData(updatedFormData);
 
     if(value.length > 0){
         setIsFocused({
@@ -42,36 +49,27 @@ const Register = () => {
             [`is${name}`]: false,
         });
     }
-
-    if(name == confirmpassword && value.length > 0){
-        setPasswordMatch(formData.password === formData.confirmpassword);
-    }
   };
 
-  // Handles input focus state
-  const handleFocus = (e) => {
-    setIsFocused({
-      ...isFocused,
-      [`is${e.target.name}`]: true,
-    });
-  };
-
-  // Handles validation of formdata before submission;
+  // Handles password visibility
+  const togglevisiblity = () =>{
+    setPasswordVisible(!passwordVisible);
+  }
 
   // Handles submission of formdata
-  const handleSubmit = async () => {
-    console.log(formData);
-    // try{
-    //     const response = await LoginUser(values);
-    //     if(response.success){
-
-    //     }else{
-
-    //     }
-    // }catch(error){
-
-    // }
-    //form.resetFields();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const {confirmpassword,...updatedFormData} = formData;
+    try{
+        const response = await SignupUser(updatedFormData);
+        if(response.success === true){
+            dispatch(showToast({ message: `${response.message}`, type: 'success' }));
+        }else{
+            dispatch(showToast({ message: `${response.message}`, type: 'info' }));
+        }
+    }catch(error){
+        dispatch(showToast({ message: `${error.message}`, type: 'error'}));
+    }
   };
 
   return (
@@ -82,7 +80,7 @@ const Register = () => {
         </div>
         <div className="register-form">
           <p>Sign up with email</p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form">
               <input
                 id="fullname"
@@ -92,7 +90,6 @@ const Register = () => {
                 title="Please enter your full name"
                 value={formData.fullname}
                 onChange={handleChange}
-                onFocus={handleFocus}
                 required
               ></input>
               <label className={isFocused.isfullname ? "focused" : ""}
@@ -103,11 +100,10 @@ const Register = () => {
                 id="email"
                 name="email"
                 type="email"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                 title="Please enter valid email address"
                 value={formData.email}
                 onChange={handleChange}
-                onFocus={handleFocus}
                 required
               ></input>
               <label className={isFocused.isemail ? "focused" : ""}
@@ -117,12 +113,12 @@ const Register = () => {
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 minLength="8"
-                title="Please enter correct password of length 8"
+                title="Must contain at least one number, one uppercase, lowercase letter and at least 8 characters"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                 value={formData.password}
                 onChange={handleChange}
-                onFocus={handleFocus}
                 required
               ></input>
               <label
@@ -131,6 +127,9 @@ const Register = () => {
               >
                 Password
               </label>
+              <span className="eye" onClick={togglevisiblity}>
+              {passwordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                </span>
             </div>
             <div className="form">
               <input
@@ -139,9 +138,9 @@ const Register = () => {
                 type="password"
                 minLength="8"
                 title="Please re-enter the password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                 value={formData.confirmpassword}
                 onChange={handleChange}
-                onFocus={handleFocus}
                 required
               ></input>
               <label
@@ -150,6 +149,11 @@ const Register = () => {
               >
                 Confirm Password
               </label>
+              {formData.password.length >7 && formData.confirmpassword.length >7 && formData.password == formData.confirmpassword && (
+                <span>
+                <CheckCircledIcon style={{color: formData.password === formData.confirmpassword ? "var(--greenresult-color)" : "var(--redresult-color)"}}/>
+                </span>
+                )}
             </div>
             <button>Sign up</button>
           </form>

@@ -12,7 +12,12 @@
     --mildlavie-color: #BB9FD7;
     --stronglavie-color: #A535F0;
     --darkblue-color: #655CF4;
-
+    --greentoast-color: #F6FFEC;
+    --bluetoast-color: #E6F4FF;
+    --redtoast-color:#FFF1EF;
+    --greenresult-color:#52C41A;
+    --blueresult-color: #1677FF;
+    --redresult-color: #FF4D4E;
 }
 
 *{

@@ -6,6 +6,7 @@ import Home from './pages/home/home'
 import AuthLayout from './layouts/AuthLayout';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
+import Toast from './components/toast/Toast';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
+      <Toast />
     </div>
   )
 }

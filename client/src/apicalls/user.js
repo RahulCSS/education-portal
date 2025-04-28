@@ -1,12 +1,14 @@
-import {instance} from '.'
+import {axiosInstance} from '.'
 
 //Register
-export const RegisterUser = async (payload) => {
+export const SignupUser = async (payload) => {
     try{
-        const response = await axiosInstance.post("/user/register",payload);
+        const response = await axiosInstance.post("/user/signup",payload);
+        console.log(response);
         return response.data;
-    }catch(err){
-        console.log(err);
+    }catch(error){
+        console.log(error);
+        const err = error.response.data;
         return err;
     }
 };
@@ -16,7 +18,8 @@ export const LoginUser = async (payload) => {
     try{
         const response = await axiosInstance.post("/user/login",payload);
         return response.data;
-    }catch(err){
+    }catch(error){
+        const err = error.response.data;
         return err;
     }
 };
