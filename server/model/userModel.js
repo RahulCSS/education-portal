@@ -29,10 +29,6 @@ const userSchema = new mongoose.Schema({
     enrolled_courses: { type: Array, default: [] },
     created_courses: { type: Array, default: [] },
     profile: { profileSchema },
-    token: { 
-        type: tokenSchema,
-        default: undefined,
-     },
 }, {timestamps: true, minimize: false});
 
 const userModel = mongoose.model("User", userSchema);

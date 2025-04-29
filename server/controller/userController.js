@@ -1,4 +1,5 @@
 const userModel = require("../model/userModel");
+const tokenModel = require("../model/tokenModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
@@ -143,10 +144,12 @@ const loginUser = async (req, res) => {
 
         // 5. Hash and save the refresh token in the database
         const hashedRefreshToken = await hashValue(refreshToken);
-        user.token= {
-            refresh_token: hashedRefreshToken,
-            createdAt: Date.now()
-        }
+        
+        await tokenModel.create({
+            user: user_id,
+            refreshToken: hashedRefreshToken,
+            created_at: Date.now()
+        });
         await user.save();
         const { password:_, token:__, updatedAt:___, __v:____, ...userWithoutPassword } = user._doc;
 
