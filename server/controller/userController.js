@@ -145,15 +145,14 @@ const loginUser = async (req, res) => {
         // 5. Hash and save the refresh token in the database
         const hashedRefreshToken = await hashValue(refreshToken);
         
-        await tokenModel.create({
-            user: user_id,
-            refreshToken: hashedRefreshToken,
-            created_at: Date.now()
+        // 6. New Token is created
+        const token = new tokenModel({
+            user: user._id,
+            refreshToken: hashedRefreshToken
         });
-        await user.save();
-        const { password:_, token:__, updatedAt:___, __v:____, ...userWithoutPassword } = user._doc;
-
-        // 6. Set the access & refresh token in the cookie
+        await token.save();
+        
+        // 7. Set the access & refresh token in the cookie
         res.cookie("access_token", accessToken, {
             httpOnly: true,
             secure: false,
@@ -168,6 +167,8 @@ const loginUser = async (req, res) => {
             path: "/",
             maxAge: 6 * 60 * 60 * 1000
         });
+
+        const { password:_, token:__, updatedAt:___, __v:____, ...userWithoutPassword } = user._doc;
         return res.status(200).json({ success: true, message: "User loggedin successfully" , userData: userWithoutPassword });
     }catch (error) {
         console.error("Error logging in user:", error);
@@ -214,21 +215,17 @@ const logoutUser = async (req,res) => {
     const userId = req.user.id;
     try{
         // 1. Check if the user exists
-        const user = await userModel.findById(userId);
-        if(!user){
-            return res.status(404).json({ success: false, message: "User does not exist" });
-        }
+        const deleteToken = await tokenModel.findOneAndDelete({ user: userId });
+        if (!deleteToken) {
+            return res.status(404).json({ success: false, message: "No active session found" });
+          }
 
-        // 3. Delete the refresh token from the database
-        user.token = {};
-        await user.save();
-
-        // 4. Clear the cookies
+        // 2. Clear the cookies
         res.clearCookie("access_token");
         res.clearCookie("refresh_token");
+        
         return res.status(200).json({ success: true, message: "User logged out successfully" });
     }catch(error){
-        console.error("Error logging out user:", error);
         return res.status(500).json({ message: "Error logging out user" });
     }
 

@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 
-const  tokenSchema = new mongoose.Schema({
-    refresh_token: { type: String, default: "" },
-    createdAt: { type: Date, default: Date.now, expires: 21600 }
-}, { _id : false });
-
 const addressSchema = new mongoose.Schema({
     street: { type: String, default: "" },
     city: { type: String, default: "" },

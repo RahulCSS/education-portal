@@ -4,6 +4,7 @@ import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
 import { LoginUser } from '../../apicalls/user'
 import { useDispatch } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
+import { setUser } from "../../store/userSlice";
 import { useNavigate } from "react-router";
 
 const Login = () => {
@@ -66,6 +67,7 @@ const Login = () => {
         console.log(response);
         if(response.success === true){
             dispatch(showToast({ message: `${response.message}`, type: 'success' }));
+            dispatch(setUser(response.userData));
             setFormData(formData);
             setIsFocused(isFocused);
             setTimeout(() => {

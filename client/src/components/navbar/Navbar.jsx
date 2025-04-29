@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect } from 'react'
 import { PersonIcon, SunIcon, ReaderIcon, MoonIcon } from "@radix-ui/react-icons"
 import './Navbar.css'
 import { LogoutUser } from '../../apicalls/user'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
+import { clearUser } from '../../store/userSlice';
 import { useNavigate } from "react-router";
 
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const userId = useSelector((state) => state.user.id);
 
     // Local States
     const [lightMode , setLightMode] = useState(true);
@@ -24,19 +26,23 @@ const Navbar = () => {
     };
 
     const handleLogout = async()=>{
-         try{
-                const response = await LogoutUser(formData);
-                if(response.success === true){
-                    dispatch(showToast({ message: `${response.message}`, type: 'success' }));
-                    setTimeout(() => {
-                      navigate('/');
-                    }, 500);
-                }else{
-                    dispatch(showToast({ message: `${response.message}`, type: 'info' }));
-                }
-            }catch(error){
-                dispatch(showToast({ message: `${error.message}`, type: 'error'}));
-            }
+      if(userId){
+        try{
+          const response = await LogoutUser(userId);
+          if(response.success === true){
+            dispatch(clearUser());
+            dispatch(showToast({ message: `${response.message}`, type: 'success' }));
+            setTimeout(() => {
+              navigate('/');
+            }, 500);
+          }else{
+            dispatch(showToast({ message: `${response.message}`, type: 'info' }));
+          }
+        }catch(error){
+          dispatch(showToast({ message: `${error.message}`, type: 'error'}));
+        }
+      }
+      dispatch(showToast({ message: 'User not logged in', type: 'info' }));
     };
 
     useEffect(() => {
@@ -80,9 +86,9 @@ const Navbar = () => {
             {showProfileMenu && (
             <div className="dropdown-menu" >
                 <ul>
-                <li><a>My Profile</a></li>
-                <li><a>Settings</a></li>
-                <li><a onClick={handleLogout}>Logout</a></li>
+                <li>My Profile</li>
+                <li>Settings</li>
+                <li onClick={handleLogout}>Logout</li>
                 </ul>
             </div>
             )}

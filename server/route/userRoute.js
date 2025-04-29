@@ -8,7 +8,7 @@ userRoute.post('/signup', signupUser);
 userRoute.post('/register',authMiddleware, roleMiddleware('Admin'), registerUser);
 userRoute.post('/login', loginUser);
 userRoute.put('/update/:id', authMiddleware, updateUser);
-userRoute.post('/logout', authMiddleware, logoutUser);
+userRoute.post('/logout/:id', authMiddleware, logoutUser);
 
 
 module.exports = userRoute;

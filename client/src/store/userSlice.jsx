@@ -1,12 +1,58 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const useSlice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState:{
-        
+        id: null,
+        fullname: null,
+        email: null,
+        role: null,
+        phone: null,
+        profile: {},
+        address: {},
+        enrolled_courses:[],
+        created_courses:[],
     },
     reducers:{
+        setRole: (state,action) => {
+            state.role = action.payload;
+        },
+        clearRole: (state) => {
+            state.role = null;
+        },
+        setUser: (state, action) => {
+            const payload = action.payload || {};
+            const newState = {...state};
+              newState.id= payload._id ?? state.id;
+              newState.fullname= payload.fullname ?? state.fullname;
+              newState.email= payload.email ?? state.email;
+              newState.profile= payload.profile ?? state.profile;
+              newState.phone= payload.phone ?? state.phone;
+              newState.address= payload.address ?? state.address;
+              newState.role= payload.role ?? state.role;
+              newState.enrolled_courses= payload.enrolled_courses ?? state.enrolled_courses;
+              newState.created_courses= payload.created_courses ?? state.created_courses;
+        
+            return newState;
+        },
 
+        clearUser: (state) => {
+            state.id = null;
+            state.name = null;
+            state.email = null;
+            state.profile_pic = null;
+            state.phone_number = null;
+            state.address = null;
+            state.role = null;
+            state.status = null;
+            state.token = null;
+            state.wishlist = [];
+            state.cart = [];
+        },
     }
 
 });
+
+export const { setRole, clearRole, setUser, clearUser } = userSlice.actions;
+
+export default userSlice.reducer;
