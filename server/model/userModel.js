@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     enrolled_courses: { type: Array, default: [] },
     created_courses: { type: Array, default: [] },
     profile: { profileSchema },
+    session_id: {type: mongoose.Schema.Types.ObjectId,ref:'Session'},
 }, {timestamps: true, minimize: false});
 
 const userModel = mongoose.model("User", userSchema);

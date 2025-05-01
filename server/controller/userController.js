@@ -1,5 +1,6 @@
 const userModel = require("../model/userModel");
-const tokenModel = require("../model/tokenModel");
+const tokenModel = require("../model/tokenModel")
+const sessionModel = require("../model/sessionModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
@@ -145,14 +146,30 @@ const loginUser = async (req, res) => {
         // 5. Hash and save the refresh token in the database
         const hashedRefreshToken = await hashValue(refreshToken);
         
-        // 6. New Token is created
+        // 6. New Sesion is created
+        const session = new sessionModel({
+            user: user._id,
+            session:{
+                start_time: Date.now(),
+            },
+            token:{
+                refreshToken: hashedRefreshToken,
+            }
+        });
+        await session.save();
+
+        // 7. Token is saved
         const token = new tokenModel({
             user: user._id,
             refreshToken: hashedRefreshToken
         });
         await token.save();
+
+        // 8. Store session_id in user
+        user.session_id= session._id;
+        await user.save();
         
-        // 7. Set the access & refresh token in the cookie
+        // 9. Set the access & refresh token in the cookie
         res.cookie("access_token", accessToken, {
             httpOnly: true,
             secure: false,
@@ -215,17 +232,43 @@ const logoutUser = async (req,res) => {
     const userId = req.user.id;
     try{
         // 1. Check if the user exists
+        const user = await userModel.findById(userId);
+        if(!user){
+            return res.status(404).json({ success: false, message: "User does not exist" });
+        }
+        
+        // 2. Check for active session
+        if(!user.session_id){
+            return res.status(404).json({ success: false, message: "No active session found" });
+        }
+
+        // 3. Clear Token
         const deleteToken = await tokenModel.findOneAndDelete({ user: userId });
         if (!deleteToken) {
             return res.status(404).json({ success: false, message: "No active session found" });
           }
 
-        // 2. Clear the cookies
+        // 3. Note session end time
+        const session = await sessionModel.findById(user.session_id);
+        if (session) {
+            session.end_time = Date.now();
+            const endtime = session.end_time;
+            const starttime = session.start_time;
+            const totaltime = endtime - starttime; 
+            session.total_time = Math.floor(totaltime);
+            await session.save();
+        }
+
+        // 4. Clear session id
+        user.session_id = null;
+        await user.save();
+
+        // 5. Clear the cookies
         res.clearCookie("access_token");
         res.clearCookie("refresh_token");
-        
         return res.status(200).json({ success: true, message: "User logged out successfully" });
     }catch(error){
+        console.log(error);
         return res.status(500).json({ message: "Error logging out user" });
     }
 

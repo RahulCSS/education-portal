@@ -12,6 +12,7 @@ const userSlice = createSlice({
         address: {},
         enrolled_courses:[],
         created_courses:[],
+        session_id: null,
     },
     reducers:{
         setRole: (state,action) => {
@@ -32,7 +33,7 @@ const userSlice = createSlice({
               newState.role= payload.role ?? state.role;
               newState.enrolled_courses= payload.enrolled_courses ?? state.enrolled_courses;
               newState.created_courses= payload.created_courses ?? state.created_courses;
-        
+              newState.session_id = payload.session_id ?? state. session_id;
             return newState;
         },
 
@@ -48,6 +49,7 @@ const userSlice = createSlice({
             state.token = null;
             state.wishlist = [];
             state.cart = [];
+            state.session_id + null;
         },
     }
 

@@ -30,19 +30,23 @@ const Navbar = () => {
         try{
           const response = await LogoutUser(userId);
           if(response.success === true){
+            console.log(response);
             dispatch(clearUser());
             dispatch(showToast({ message: `${response.message}`, type: 'success' }));
             setTimeout(() => {
               navigate('/');
             }, 500);
           }else{
+            console.log(response);
             dispatch(showToast({ message: `${response.message}`, type: 'info' }));
           }
         }catch(error){
           dispatch(showToast({ message: `${error.message}`, type: 'error'}));
         }
       }
-      dispatch(showToast({ message: 'User not logged in', type: 'info' }));
+      else{
+        dispatch(showToast({ message: 'User not logged in', type: 'info' }));
+      }
     };
 
     useEffect(() => {
