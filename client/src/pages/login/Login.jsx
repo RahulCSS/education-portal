@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
 import { LoginUser } from '../../apicalls/user'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
 import { setUser } from "../../store/userSlice";
 import { useNavigate } from "react-router";
@@ -10,8 +10,18 @@ import { useNavigate } from "react-router";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+ 
+  // Datas
+  const roleRoutes = {
+    Student: '/',
+    Admin: '/admin',
+    Tutor: '/tutor',
+  };
 
-  // *** Local States ***
+  // Store 
+  const user = useSelector((state)=> state.user);
+  const role = user?.role;
+
   // FormData
   const [formData, setFormData] = useState({
     email: '',
@@ -26,7 +36,6 @@ const Login = () => {
 
   const [passwordVisible,setPasswordVisible] = useState(false);
 
-  // *** Handlers ***
   // Handles input value changes & stores in local state
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,14 +73,14 @@ const Login = () => {
     e.preventDefault();
     try{
         const response = await LoginUser(formData);
-        console.log(response);
+        const userRole = response.userData.role;
         if(response.success === true){
             dispatch(showToast({ message: `${response.message}`, type: 'success' }));
             dispatch(setUser(response.userData));
             setFormData(formData);
             setIsFocused(isFocused);
             setTimeout(() => {
-              navigate('/');
+                navigate(`${roleRoutes[userRole]}`);
             }, 500);
         }else{
             dispatch(showToast({ message: `${response.message}`, type: 'info' }));
@@ -80,6 +89,15 @@ const Login = () => {
         dispatch(showToast({ message: `${error.message}`, type: 'error'}));
     }
   };
+
+  useEffect(() => {
+    console.log(role);
+    if (role && roleRoutes[role]) {
+      console.log(role);
+      console.log(roleRoutes[role]);
+      navigate(`${roleRoutes[role]}`);
+    }
+  }, [role]);
 
   return (
     <div className="login-container">

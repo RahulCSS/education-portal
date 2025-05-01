@@ -39,17 +39,15 @@ const userSlice = createSlice({
 
         clearUser: (state) => {
             state.id = null;
-            state.name = null;
+            state.fullname = null;
             state.email = null;
-            state.profile_pic = null;
-            state.phone_number = null;
-            state.address = null;
+            state.phone = null;
             state.role = null;
-            state.status = null;
-            state.token = null;
-            state.wishlist = [];
-            state.cart = [];
-            state.session_id + null;
+            state.profile = {};
+            state.address = {};
+            state.enrolled_courses = [];
+            state.created_courses = [];
+            state.session_id = null;
         },
     }
 

@@ -25,7 +25,12 @@ const generateAccessToken = (user) => {
     return jwt.sign({ id: user._id }, process.env.JWT_SECRET_ACCESS_TOKEN, { expiresIn: '15m' });
 };
 const generateRefreshToken = (user) => {
-    return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET_REFRESH_TOKEN, { expiresIn: '6h' });
+    return jwt.sign({ id: user.session_id }, process.env.JWT_SECRET_REFRESH_TOKEN, { expiresIn: '6h' });
+};
+
+// Verify token
+const verifyToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET_REFRESH_TOKEN);
 };
 
 // Hashing password
@@ -139,35 +144,32 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
 
-        // 4. Generate a token
-        const accessToken = generateAccessToken(user);
-        const refreshToken = generateRefreshToken(user);
-
-        // 5. Hash and save the refresh token in the database
-        const hashedRefreshToken = await hashValue(refreshToken);
-        
-        // 6. New Sesion is created
+        // 4. New Sesion is created
         const session = new sessionModel({
             user: user._id,
             session:{
                 start_time: Date.now(),
             },
-            token:{
-                refreshToken: hashedRefreshToken,
-            }
         });
         await session.save();
 
-        // 7. Token is saved
+        // 5. Store session_id in user
+        user.session_id= session._id;
+        await user.save();
+
+        // 6. Generate a token
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+
+        // 7. Hash and save the refresh token in the database
+        const hashedRefreshToken = await hashValue(refreshToken);
+
+        // 8. Token is saved
         const token = new tokenModel({
             user: user._id,
             refreshToken: hashedRefreshToken
         });
         await token.save();
-
-        // 8. Store session_id in user
-        user.session_id= session._id;
-        await user.save();
         
         // 9. Set the access & refresh token in the cookie
         res.cookie("access_token", accessToken, {
@@ -181,7 +183,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
             secure: false,
             sameSite: "Lax",
-            path: "/",
+            path: "/auth/refresh",
             maxAge: 6 * 60 * 60 * 1000
         });
 

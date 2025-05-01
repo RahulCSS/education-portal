@@ -7,6 +7,7 @@ import AuthLayout from './layouts/AuthLayout';
 import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup'
 import Toast from './components/toast/Toast';
+import Admin from './pages/admin/admin';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
