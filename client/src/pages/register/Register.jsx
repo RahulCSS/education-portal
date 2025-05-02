@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
 import { CheckCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
 import { SignupUser } from '../../apicalls/user'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
 import { useNavigate } from "react-router";
 
 const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+  
+  // Datas
+  const roleRoutes = {
+    Student: '/',
+    Admin: '/admin',
+    Tutor: '/tutor',
+  };
+
+  // Store 
+  const user = useSelector((state)=> state.user);
+  const role = user?.role;
 
   // *** Local States ***
   // FormData
@@ -82,6 +93,12 @@ const Register = () => {
         dispatch(showToast({ message: `${error.message}`, type: 'error'}));
     }
   };
+
+ useEffect(() => {
+    if (role && roleRoutes[role]) {
+      navigate(`${roleRoutes[role]}`);
+    }
+  }, [role]);
 
   return (
     <div className="register-container">

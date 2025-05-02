@@ -91,10 +91,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log(role);
     if (role && roleRoutes[role]) {
-      console.log(role);
-      console.log(roleRoutes[role]);
       navigate(`${roleRoutes[role]}`);
     }
   }, [role]);
