@@ -24,7 +24,13 @@ const Navbar = () => {
     const toogleShowProfileMenu = ()=>{
         setShowProfileMenu(!showProfileMenu);
     };
+    const handleLogin = () => {
+      navigate('/login');
+    }
 
+    const handleSignup = () => {
+      navigate('/signup');
+    }
     const handleLogout = async()=>{
       if(userId){
         try{
@@ -87,7 +93,7 @@ const Navbar = () => {
         </a>
         <a onClick={toogleShowProfileMenu} className="profile-menu" >
           <PersonIcon />
-            {showProfileMenu && (
+            {showProfileMenu ? userId ?(
             <div className="dropdown-menu" >
                 <ul>
                 <li>My Profile</li>
@@ -95,7 +101,14 @@ const Navbar = () => {
                 <li onClick={handleLogout}>Logout</li>
                 </ul>
             </div>
-            )}
+            ) : <div className="dropdown-menu" >
+                  <div className="login-signup">
+                    <span className="link" onClick={handleLogin}>Login</span>
+                    <span>or</span>
+                    <span><a className="link" onClick={handleSignup}>Signup</a>for new account</span>
+                  </div>
+                </div>
+            : <></>}
         </a>
         <a>
           <ReaderIcon />
