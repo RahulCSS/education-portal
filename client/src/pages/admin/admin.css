@@ -44,6 +44,24 @@
     padding-bottom: 2rem;
 }
 
-.sidebar span{
+.menu-icon{
+    display:flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.menu-icon a {
+    width: 2rem;
+    height:2rem;
+}
+
+.menu-icon a svg{
+    width:2rem;
+    height:2rem;
+    
+}
+
+.menu-icon span{
+    margin-left: 1rem ;
     padding: 1rem 0;
 }
