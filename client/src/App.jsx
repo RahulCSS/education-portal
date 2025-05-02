@@ -8,6 +8,9 @@ import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup'
 import Toast from './components/toast/Toast';
 import Admin from './pages/admin/admin';
+import ProtectedRoute from './route/ProtectedRoute';
+import Tutor from './pages/tutor/Tutor';
+import Student from './pages/student/Student';
 
 const App = () => {
   return (
@@ -15,7 +18,15 @@ const App = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={['Tutor']} />}>
+            <Route path="/tutor" element={<Tutor />} />
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={['Student']} />}>
+            <Route path="/student" element={<Student />} />
+          </Route>
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
