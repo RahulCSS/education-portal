@@ -1,0 +1,49 @@
+.admin-container{
+    display: flex;
+    flex-direction: column;
+    width:100vw;
+    height: 100vh;
+    padding-top:3rem;
+}
+
+.admin-grid{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 5% 95%;
+    grid-template-areas:
+    "sidebar topbar"
+    "sidebar content";
+    flex-grow: 1;
+}
+
+.sidebar{
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--ashwhite-color);
+    padding: 2rem 1rem;
+}
+
+.main-content{
+    background-color: var(--snowwhite-color);
+}
+
+.topbar {
+    grid-area: topbar;
+    background-color: var(--ashwhite-color);
+}
+
+.content{
+    grid-area: content;
+    background-color: var(--snowwhite-color);
+}
+
+.sidebar p {
+    text-align: center;
+    font-size: 2rem;
+    padding-bottom: 2rem;
+}
+
+.sidebar span{
+    padding: 1rem 0;
+}
