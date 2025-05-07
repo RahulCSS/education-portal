@@ -105,7 +105,7 @@ const Navbar = () => {
                   <div className="login-signup">
                     <span className="link" onClick={handleLogin}>Login</span>
                     <span>or</span>
-                    <span><a className="link" onClick={handleSignup}>Signup</a>for new account</span>
+                    <span><span className="link" onClick={handleSignup}>Signup</span>for new account</span>
                   </div>
                 </div>
             : <></>}

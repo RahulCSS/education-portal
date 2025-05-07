@@ -18,9 +18,6 @@ const App = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
-            <Route path="/admin" element={<Admin />} />
-          </Route>
           <Route element={<ProtectedRoute allowedRoles={['Tutor']} />}>
             <Route path="/tutor" element={<Tutor />} />
           </Route>
@@ -31,6 +28,9 @@ const App = () => {
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
         </Route>
       </Routes>
       <Toast />
