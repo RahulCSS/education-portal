@@ -25,7 +25,7 @@ const generateAccessToken = (user) => {
     return jwt.sign({ id: user._id }, process.env.JWT_SECRET_ACCESS_TOKEN, { expiresIn: '15m' });
 };
 const generateRefreshToken = (user) => {
-    return jwt.sign({ id: user.session_id }, process.env.JWT_SECRET_REFRESH_TOKEN, { expiresIn: '6h' });
+    return jwt.sign({ id: user._id ,session_id: user.session_id }, process.env.JWT_SECRET_REFRESH_TOKEN, { expiresIn: '6h' });
 };
 
 // Verify token
@@ -267,7 +267,8 @@ const logoutUser = async (req,res) => {
 
         // 5. Clear the cookies
         res.clearCookie("access_token");
-        res.clearCookie("refresh_token");
+        res.clearCookie("refresh_token", { path: "/auth/refresh" });
+        
         return res.status(200).json({ success: true, message: "User logged out successfully" });
     }catch(error){
         console.log(error);
@@ -278,19 +279,15 @@ const logoutUser = async (req,res) => {
 
 const checkEmail = async (req,res) => {
     const email = req.params.email;
-    console.log(email);
     try{
         const userEmail = await userModel.findOne({email});
         if(userEmail){
-            console.log(userEmail);
             return res.status(200).json({success: true, message:"Email Id exists"})
         }
         if(!userEmail){
-            console.log(false);
             return res.status(200).json({ success: false, message: "Email ID does not exist" });
         }
     }catch(error){
-        console.log(error);
         return res.status(500).json({ message: "Error checking emailID" });
     }
 };
