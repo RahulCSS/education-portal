@@ -106,15 +106,14 @@ const Signup = () => {
     }
   };
 
+  // Check of email already exists
   const checkEmail = async (email) => {
     setEmailChecked(false);
     if (!email) return;
 
     try {
-      console.log(email);
       const response = await CheckEmail(email);
       const exists = response.success;
-      console.log(exists);
       setisEmailTaken(exists);
       setEmailChecked(true);
     } catch (error) {

@@ -1,6 +1,11 @@
 import React,{useState, useRef, useEffect} from 'react'
 import './admin.css'
 import Dashboard from '../../components/adminpage/dashboard/Dashboard';
+import Students from '../../components/adminpage/student/Students';
+import Tutors from '../../components/adminpage/tutor/Tutors';
+import Courses from '../../components/adminpage/courses/Courses';
+import Announcements from '../../components/adminpage/announcements/Announcements';
+import Queries from '../../components/adminpage/queries/Queries';
 import { DashboardIcon, AvatarIcon, PersonIcon, BellIcon, ArchiveIcon, 
   QuestionMarkCircledIcon, RowsIcon, SunIcon, MoonIcon } from "@radix-ui/react-icons"
 import { LogoutUser } from '../../apicalls/user';
@@ -14,6 +19,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.id);
 
+  // Data
   const menu = [
     ['Dashboard',<DashboardIcon />],
     ['Students',<AvatarIcon />],
@@ -27,6 +33,7 @@ const Admin = () => {
   const [lightMode , setLightMode] = useState(true);
   const [ showUserMenu, setShowUserMenu ] = useState(false);
   const usermenuRef = useRef(null);
+  const [selectedMenu, setSelectedMenu] = useState('Dashboard');
 
   // Handlers
   const toggleMode = ()=>{
@@ -81,7 +88,7 @@ const Admin = () => {
           </div>
           {menu.map((items,index)=> {
             return (
-              <div key= {index} className='menu-icon'>
+              <div key= {index} className='menu-icon' onClick={()=>{setSelectedMenu(items[0])}}>
                 <a>{items[1]}</a>
                 <span>{items[0]}</span>
               </div>
@@ -114,7 +121,12 @@ const Admin = () => {
                     </a>
           </div>
           <div className="content">
-            <Dashboard />
+            {selectedMenu === 'Dashboard' && <Dashboard />}
+            {selectedMenu === 'Students' && <Students />}
+            {selectedMenu === 'Tutors' && <Tutors />}
+            {selectedMenu === 'Courses' && <Courses />}
+            {selectedMenu === 'Announcements' && <Announcements />}
+            {selectedMenu === 'Queires' && <Queries />}
           </div>
       </div>
     </div>

@@ -1,0 +1,6 @@
+.tutors-container{
+    margin:1.5rem;
+    padding:1rem;
+    background-color: var(--snowwhite-color);
+    border-radius: 15px;
+}
