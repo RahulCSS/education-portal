@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Signup.css";
-import { CheckCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
-import { SignupUser } from '../../apicalls/user'
+import { CheckCircledIcon, CrossCircledIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons"
+import { CheckEmail, SignupUser } from '../../apicalls/user'
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../../store/toastSlice';
 import { useNavigate } from "react-router";
+
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
 
 const Signup = () => {
     const dispatch = useDispatch();
@@ -39,6 +49,8 @@ const Signup = () => {
   });
 
   const [passwordVisible,setPasswordVisible] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [isEmailTaken, setisEmailTaken] = useState(false);
 
   // *** Handlers ***
   // Handles input value changes & stores in local state
@@ -94,6 +106,31 @@ const Signup = () => {
     }
   };
 
+  const checkEmail = async (email) => {
+    setEmailChecked(false);
+    if (!email) return;
+
+    try {
+      console.log(email);
+      const response = await CheckEmail(email);
+      const exists = response.success;
+      console.log(exists);
+      setisEmailTaken(exists);
+      setEmailChecked(true);
+    } catch (error) {
+      console.error("Email check failed", error);
+      setEmailStatus("Error");
+      setEmailChecked(true);
+    }
+  };
+
+  // Debounce the API call
+  const debouncedCheckEmail = useCallback(debounce(checkEmail, 3000), []);
+
+  useEffect(() => {
+    debouncedCheckEmail(formData.email);
+  }, [formData.email, debouncedCheckEmail]);
+
  useEffect(() => {
     if (role && roleRoutes[role]) {
       navigate(`${roleRoutes[role]}`);
@@ -137,6 +174,14 @@ const Signup = () => {
               ></input>
               <label className={isFocused.isemail ? "focused" : ""}
               htmlFor="email">Email</label>
+              <span>
+                {emailChecked && (
+                  isEmailTaken ? 
+                  <CrossCircledIcon style={{color: "var(--redresult-color)" }}/>
+                  : 
+                  <CheckCircledIcon style={{color: "var(--greenresult-color)" }}/> 
+                )}
+              </span>
             </div>
             <div className="form">
               <input

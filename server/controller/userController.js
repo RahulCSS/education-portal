@@ -276,6 +276,25 @@ const logoutUser = async (req,res) => {
 
 }
 
+const checkEmail = async (req,res) => {
+    const email = req.params.email;
+    console.log(email);
+    try{
+        const userEmail = await userModel.findOne({email});
+        if(userEmail){
+            console.log(userEmail);
+            return res.status(200).json({success: true, message:"Email Id exists"})
+        }
+        if(!userEmail){
+            console.log(false);
+            return res.status(200).json({ success: false, message: "Email ID does not exist" });
+        }
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({ message: "Error checking emailID" });
+    }
+};
+
 module.exports = {
-    signupUser, registerUser, loginUser, updateUser,logoutUser
+    signupUser, registerUser, loginUser, updateUser,logoutUser, checkEmail
 };

@@ -32,3 +32,14 @@ export const LogoutUser = async (payload) => {
         return err;
     }
 };
+
+// Email Check
+export const CheckEmail = async (payload) => {
+    try{
+        const response = await axiosInstance.post(`/user/check-email/${payload}`);
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};
