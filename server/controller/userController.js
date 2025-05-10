@@ -230,6 +230,7 @@ const updateUser = async (req,res) => {
     }
 };
 
+// Logout User
 const logoutUser = async (req,res) => {
     const userId = req.user.id;
     try{
@@ -277,6 +278,7 @@ const logoutUser = async (req,res) => {
 
 }
 
+// Check Email
 const checkEmail = async (req,res) => {
     const email = req.params.email;
     try{

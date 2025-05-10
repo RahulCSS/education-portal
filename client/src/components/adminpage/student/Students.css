@@ -1,6 +1,60 @@
 .students-container{
-    margin:1.5rem;
+    padding:2rem;
+    background-color: var(--snoopywhite-color);
+    border-radius: 15px;
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.students{
     padding:1rem;
     background-color: var(--snowwhite-color);
-    border-radius: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+    overflow: hidden;
 }
+
+table{
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px var(--ashwhite-color);
+    background-color: var(--snoopywhite-color);
+    text-align: left;
+    overflow: hidden;
+}
+
+thead{
+    box-shadow: 0 5px 10px var(--ashwhite-color);
+}
+
+th{
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--white-color);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--snowwhite-color);
+}
+  
+tbody tr:hover {
+    background-color: var(--snoopywhite-color);
+    cursor: pointer;
+}
+
+td{
+    padding: 1rem 2rem;
+}
+
+td.center {
+    text-align: center;
+  }

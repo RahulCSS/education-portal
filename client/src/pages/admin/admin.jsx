@@ -126,7 +126,7 @@ const Admin = () => {
             {selectedMenu === 'Tutors' && <Tutors />}
             {selectedMenu === 'Courses' && <Courses />}
             {selectedMenu === 'Announcements' && <Announcements />}
-            {selectedMenu === 'Queires' && <Queries />}
+            {selectedMenu === 'Queries' && <Queries />}
           </div>
       </div>
     </div>
