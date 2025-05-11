@@ -1,8 +1,8 @@
 import {axiosInstance} from '.'
 
-export const GetAllStudents = async () => {
+export const GetStudents = async () => {
     try{
-        const response = await axiosInstance.get("/user/get-all-students");
+        const response = await axiosInstance.get("/user/get-students");
         return response.data;
     }catch(error){
         const err = error.response.data;
@@ -10,9 +10,9 @@ export const GetAllStudents = async () => {
     }
 };
 
-export const GetAllTutors = async () => {
+export const GetTutors = async () => {
     try{
-        const response = await axiosInstance.get("/user/get-all-tutors");
+        const response = await axiosInstance.get("/user/get-tutors");
         return response.data;
     }catch(error){
         const err = error.response.data;

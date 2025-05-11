@@ -1,6 +1,6 @@
 import React,{ useEffect, useState } from 'react'
 import './Students.css'
-import { GetAllStudents } from '../../../apicalls/admin'
+import { GetStudents } from '../../../apicalls/admin'
 import { showToast } from '../../../store/toastSlice'
 import { useDispatch } from 'react-redux';
 import { ChevronLeftIcon, ChevronRightIcon, CaretSortIcon, ReloadIcon } from "@radix-ui/react-icons"
@@ -12,12 +12,54 @@ const Students = () => {
     new Date(dateStr).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   // Local State
-  const [ AllStudents, setAllStudents ] = useState([]);
+  const [ allStudents, setAllStudents ] = useState([]);
+  const [ queryParams, setQueryParams ] = useState({
+    page:1,
+    limit:5,
+    sortBy: 'fullname',
+    sortOrder: 'asc'
+  });
+  const [ totalPages, setTotalPages ] = useState(10);
+
+  //Handlers
+  const handleSelect = (key,value) =>{
+    setQueryParams((prev)=>({
+      ...prev,
+      [key] : value,
+    }))
+  }
+
+  const handlePagination = (change)=>{
+    if(change === 'dec' && queryParams.page > 1){
+      handleSelect('page', queryParams.page - 1);
+    } else if (change === 'inc' && queryParams.page < totalPages) {
+      handleSelect('page', queryParams.page + 1);
+    }
+  };
+
+  const handleSortByOrder = (field) =>{
+    setQueryParams((prev) => {
+      if (prev.sortBy !== field) {
+        return { ...prev, sortBy: field, sortOrder: 'asc', page: 1 };
+      }
+      const newOrder = prev.sortOrder === 'asc' ? 'desc' : 'asc';
+      return { ...prev, sortOrder: newOrder, page: 1 };
+    });
+  }
+
+  const handleReload = () =>{
+    setQueryParams({
+      page:1,
+      limit:5,
+      sortBy: 'fullname',
+      sortOrder: 'asc'
+    })
+  };
 
   // API
-  const getAllStudents = async ()=> {
+  const getStudents = async ()=> {
     try{
-      const response = await GetAllStudents();
+      const response = await GetStudents();
       if(response.success === true ){
         setAllStudents(response.data);
       }
@@ -27,8 +69,9 @@ const Students = () => {
   };
 
   useEffect(()=>{
-    getAllStudents();
-  },[]);
+    console.log(queryParams);
+    getStudents();
+  },[queryParams]);
 
   return (
     <div className="students-container">
@@ -39,26 +82,28 @@ const Students = () => {
         <div className="count">
         <label>
           Count per page:
-          <select>
+          <select 
+          value={queryParams.limit}
+          onChange={(e) => handleSelect('limit',e.target.value)}>
             <option value={5}>5</option>
             <option value={10}>10</option>
-            <option value={20}>20</option>
+            <option value={15}>15</option>
           </select>
         </label>
         </div>
-        <div className="reload-icon"><ReloadIcon />Reload</div>
+        <div className="reload-icon" onClick={handleReload}><ReloadIcon />Reload</div>
       </div>
       <table>
         <thead>
           <tr>
             <th>
               <span className="th-content">
-                Fullname <CaretSortIcon />
+                Fullname <CaretSortIcon onClick={()=>{handleSortByOrder('fullname')}}/>
               </span>
             </th>
             <th>
               <span className="th-content">
-                E-Mail <CaretSortIcon />
+                E-Mail <CaretSortIcon onClick={()=>{handleSortByOrder('email')}}/>
               </span>
             </th>
             <th>
@@ -69,18 +114,18 @@ const Students = () => {
             </th>
             <th>
               <span className="th-content">
-                Joined On <CaretSortIcon />
+                Joined On <CaretSortIcon onClick={()=>{handleSortByOrder('createdAt')}}/>
               </span>
             </th>
           </tr>
         </thead>
         <tbody>
-        {AllStudents.length === 0 ? (
+        {allStudents.length === 0 ? (
           <tr>
               <td colSpan="6">No students found.</td>
             </tr>
           ) : (
-            AllStudents.map((student)=>
+            allStudents.map((student)=>
               (
                 <tr key={student._id}>
                   <td>{student.fullname}</td>
@@ -95,9 +140,9 @@ const Students = () => {
       </table>
       </div>
       <div className="student-pagination">
-        <span className="paginate"><ChevronLeftIcon /></span>
-        <span className="pagecount">Page 1 of 10</span>
-        <span className="paginate"><ChevronRightIcon /></span>
+        <span className="paginate" onClick={() => handlePagination('dec')}><ChevronLeftIcon /></span>
+        <span className="pagecount">Page {queryParams.page} of {totalPages}</span>
+        <span className="paginate" onClick={() => handlePagination('inc')}><ChevronRightIcon /></span>
       </div>
       </div>
     </div>

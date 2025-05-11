@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { showToast } from '../store/toastSlice';
 import { clearUser } from '../store/userSlice';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { store } from '../store/store';
 
 export const axiosInstance = axios.create({
@@ -28,14 +26,14 @@ axiosInstance.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
-        if(error.response && (
-            (error.response.data.message === 'No refresh token') ||
-            (error.response.data.message === 'User not found') ||
-            (error.response.data.message === 'Session expired') ||
-            (error.response.data.message === 'No token found') ||
-            (error.response.data.message === 'Invalid refresh token') ||
-            (error.response.data.message === 'Refresh token expired or invalid') 
-            )
+        if(error.response && [
+            'No refresh token',
+            'User not found',
+            'Session expired',
+            'No token found',
+            'Invalid refresh token',
+            'Refresh token expired or invalid',
+        ].includes(error.response.data.message)
         ){
             store.dispatch(clearUser());
             store.dispatch(showToast({ message: 'Token expired! Logged out', type: 'info' }));
