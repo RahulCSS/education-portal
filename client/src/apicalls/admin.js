@@ -1,8 +1,10 @@
 import {axiosInstance} from '.'
 
-export const GetStudents = async () => {
+export const GetStudents = async (params) => {
     try{
-        const response = await axiosInstance.get("/user/get-students");
+        const query = new URLSearchParams(params).toString();
+        console.log(query);
+        const response = await axiosInstance.get(`/user/get-students?${query}`);
         return response.data;
     }catch(error){
         const err = error.response.data;

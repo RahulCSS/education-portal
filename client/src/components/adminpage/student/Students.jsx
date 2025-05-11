@@ -59,9 +59,10 @@ const Students = () => {
   // API
   const getStudents = async ()=> {
     try{
-      const response = await GetStudents();
+      const response = await GetStudents(queryParams);
       if(response.success === true ){
         setAllStudents(response.data);
+        setTotalPages(response.totalpages);
       }
     } catch(error){
       dispatch(showToast({ message: `${error.message}`, type: 'error'}));
