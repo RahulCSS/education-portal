@@ -47,14 +47,12 @@ const Admin = () => {
           try{
             const response = await LogoutUser(userId);
             if(response.success === true){
-              console.log(response);
               dispatch(clearUser());
               dispatch(showToast({ message: `${response.message}`, type: 'success' }));
               setTimeout(() => {
                 navigate('/');
               }, 500);
             }else{
-              console.log(response);
               dispatch(showToast({ message: `${response.message}`, type: 'info' }));
             }
           }catch(error){
@@ -76,7 +74,15 @@ const Admin = () => {
           document.addEventListener('mousedown', handleClickOutside);
       
           return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, []);
+  }, []);
+
+  useEffect(()=>{
+    if(!userId){
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
+    }
+  },[userId]);
 
   return (
     <div className="admin-container">

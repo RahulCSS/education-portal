@@ -3,6 +3,7 @@ import './Students.css'
 import { GetAllStudents } from '../../../apicalls/admin'
 import { showToast } from '../../../store/toastSlice'
 import { useDispatch } from 'react-redux';
+import { ChevronLeftIcon, ChevronRightIcon, CaretSortIcon, ReloadIcon } from "@radix-ui/react-icons"
 
 const Students = () => {
   const dispatch = useDispatch();
@@ -31,16 +32,46 @@ const Students = () => {
 
   return (
     <div className="students-container">
-      <div className="students"> 
+      <div className="students">
       <h1>Students</h1>
+      <div className="students-table">
+      <div className="table-controls">
+        <div className="count">
+        <label>
+          Count per page:
+          <select>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </label>
+        </div>
+        <div className="reload-icon"><ReloadIcon />Reload</div>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Fullname</th>
-            <th>E-mail</th>
-            <th>Phone</th>
-            <th>Location</th>
-            <th>Joined on</th>
+            <th>
+              <span className="th-content">
+                Fullname <CaretSortIcon />
+              </span>
+            </th>
+            <th>
+              <span className="th-content">
+                E-Mail <CaretSortIcon />
+              </span>
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+              <span className="th-content">
+                Joined On <CaretSortIcon />
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +93,12 @@ const Students = () => {
             }
         </tbody>
       </table>
+      </div>
+      <div className="student-pagination">
+        <span className="paginate"><ChevronLeftIcon /></span>
+        <span className="pagecount">Page 1 of 10</span>
+        <span className="paginate"><ChevronRightIcon /></span>
+      </div>
       </div>
     </div>
   )

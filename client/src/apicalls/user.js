@@ -26,6 +26,7 @@ export const LoginUser = async (payload) => {
 export const LogoutUser = async (payload) => {
     try{
         const response = await axiosInstance.post(`/user/logout/${payload}`);
+        console.log(response);
         return response.data;
     }catch(error){
         const err = error.response.data;

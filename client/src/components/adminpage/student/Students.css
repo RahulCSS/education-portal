@@ -14,10 +14,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap:1rem;
+    gap: 2rem;
     overflow: hidden;
 }
 
+.students-table{
+    position: relative;
+}
+
+.table-controls{
+    position: absolute;
+    top: -32px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    gap:4rem;
+    
+}
+
+.count select {
+    padding: 0;
+    width: 2.5rem;
+    height: 1.35rem;
+}
+
+.reload-icon{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--snowwhite-color);
+    border: 1px solid var(--ashwhite-color);
+    padding: 0.1rem 0.2rem;
+    cursor:pointer;
+    transition: all 0.3s ease;
+}
+
+.reload-icon:hover{
+    background-color: var(--bluetoast-color);
+    border: 1px solid var(--darkblue-color);
+    border-radius: 5px;
+}
+
+.count-per-page{
+    position: absolute;
+}
 table{
     border-collapse: collapse;
     box-shadow: 0 5px 10px var(--ashwhite-color);
@@ -32,10 +72,17 @@ thead{
 
 th{
     padding: 1rem 2rem;
+}
+
+.th-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     font-size: 0.8rem;
     font-weight: 800;
+    cursor: pointer;
 }
 
 tbody tr:nth-child(odd) {
@@ -58,3 +105,27 @@ td{
 td.center {
     text-align: center;
   }
+
+.student-pagination{
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}
+
+.paginate{
+    display: block;
+    width:2rem;
+    height:2rem;
+    cursor:pointer;
+}
+
+.page{
+    display: block;
+    width:auto;
+    height:2rem;
+}
+
+.student-pagination svg{
+    width:2rem;
+    height:2rem;
+}
