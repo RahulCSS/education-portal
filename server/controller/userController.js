@@ -106,9 +106,6 @@ const loginUser = async (req, res) => {
         // 4. New Sesion is created
         const session = new sessionModel({
             user: user._id,
-            session:{
-                start_time: Date.now(),
-            },
         });
         await session.save();
 

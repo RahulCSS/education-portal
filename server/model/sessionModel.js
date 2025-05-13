@@ -5,6 +5,7 @@ const sessionSchema = new mongoose.Schema({
     start_time: { type: Date, default: Date.now, required: true },
     end_time:{ type: Date},
     total_time: { type: Number},
+    last_activity: { type: Date, default: Date.now, required: true  },
 })
 
 const sessionModel = mongoose.model("Session",  sessionSchema);
