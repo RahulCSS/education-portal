@@ -127,6 +127,10 @@ const Admin = () => {
                     </a>
           </div>
           <div className="content">
+            <span className="corner top-left"></span>
+            <span className="corner top-right"></span>
+            <span className="corner bottom-left"></span>
+            <span className="corner bottom-right"></span>
             {selectedMenu === 'Dashboard' && <Dashboard />}
             {selectedMenu === 'Students' && <Students />}
             {selectedMenu === 'Tutors' && <Tutors />}
