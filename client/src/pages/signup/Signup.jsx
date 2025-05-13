@@ -20,7 +20,7 @@ const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-  // Datas
+  // Data
   const roleRoutes = {
     Student: '/',
     Admin: '/admin',
@@ -93,8 +93,16 @@ const Signup = () => {
         const response = await SignupUser(updatedFormData);
         if(response.success === true){
             dispatch(showToast({ message: `${response.message}`, type: 'success' }));
-            setFormData(formData);
-            setIsFocused(isFocused);
+            setFormData({
+              fullname: '',
+              email: '',
+              password: '',
+            });
+            setIsFocused({
+              isfullname: false,
+              isemail: false,
+              ispassword: false,
+            });
             setTimeout(() => {
               navigate('/login');
             }, 500);

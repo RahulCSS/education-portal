@@ -1,6 +1,6 @@
 import {axiosInstance} from '.'
 
-//Register
+//Signup
 export const SignupUser = async (payload) => {
     try{
         const response = await axiosInstance.post("/user/signup",payload);

@@ -1,9 +1,9 @@
 import {axiosInstance} from '.'
 
+// Get Students
 export const GetStudents = async (params) => {
     try{
         const query = new URLSearchParams(params).toString();
-        console.log(query);
         const response = await axiosInstance.get(`/user/get-students?${query}`);
         return response.data;
     }catch(error){
@@ -12,9 +12,22 @@ export const GetStudents = async (params) => {
     }
 };
 
-export const GetTutors = async () => {
+// Get Tutors
+export const GetTutors = async (params) => {
     try{
-        const response = await axiosInstance.get("/user/get-tutors");
+        const query = new URLSearchParams(params).toString();
+        const response = await axiosInstance.get(`/user/get-tutors?${query}`);
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};
+
+// Signup Tutor
+export const SignupTutor = async (payload) => {
+    try{
+        const response = await axiosInstance.post("/user/signup-tutor",payload);
         return response.data;
     }catch(error){
         const err = error.response.data;

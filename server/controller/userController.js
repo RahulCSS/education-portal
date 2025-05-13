@@ -82,47 +82,6 @@ const signupUser = async (req,res) => {
     }
 };
 
-// Register a new user
-const registerUser = async (req,res) => {
-    const {fullname, email, password, role} = req.body;
-    try{
-        // 1. Check if all required fields are provided
-        if(!fullname || !email || !password){
-            return res.status(400).json({ success: false, message: "Please fill all the fields" });
-        }
-
-        // 2. Validating fields
-        if(!isValidEmail(email)){
-            return res.status(422).json({ success: false, message: "Please enter a valid email" });
-        }
-        if(!isValidPassword(password)){
-            return res.status(422).json({ success: false, message: "Password must be at least 8 characters long, must contain at least one uppercase letter, one lowercase letter, and one number" });
-        }
-
-        // 3. If all fields valid , Check if email already exists
-        const userExists = await userModel.findOne({ email });
-        if(userExists){
-            return res.status(409).json({ success: false, message: "User already exists" });
-        }
-
-        // 5. Hash the password
-        const hashedPassword = await hashValue(password);
-
-        // 6. Create a new user
-        const newUser = new userModel({
-            fullname,
-            email,
-            password: hashedPassword,
-            role,
-        });
-        await newUser.save();
-        return res.status(201).json({ success: true, message: "User registered successfully" });
-    }catch (error) {
-        console.error("Error registering user:", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-};
-
 // Login a user
 const loginUser = async (req, res) => {
     const {email,password} = req.body;
@@ -295,5 +254,5 @@ const checkEmail = async (req,res) => {
 };
 
 module.exports = {
-    signupUser, registerUser, loginUser, updateUser,logoutUser, checkEmail
+    signupUser, loginUser, updateUser, logoutUser, checkEmail
 };

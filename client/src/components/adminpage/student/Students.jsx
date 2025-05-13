@@ -70,7 +70,6 @@ const Students = () => {
   };
 
   useEffect(()=>{
-    console.log(queryParams);
     getStudents();
   },[queryParams]);
 
