@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const userRoute = require('./route/userRoute');
 const authRoute = require('./route/authRoute');
+const uploadRoute = require('./route/uploadRoute');
 
 // Imports
 const connectDB = require('./dbConfig/dbConfiguration');
@@ -39,3 +40,4 @@ app.listen(port,() => {
 // API routes
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
+app.use('/upload', uploadRoute);
