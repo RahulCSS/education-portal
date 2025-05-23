@@ -152,7 +152,7 @@ const Tutors = () => {
       const response = await GetTutors(queryParams);
       if (response.success === true) {
         setAllTutors(response.data);
-        setTotalPages(response.totalpages);
+        setTotalPages(response.totalpages == 0 ? 1: response.totalpages);
       }
     } catch (error) {
       dispatch(showToast({ message: `${error.message}`, type: "error" }));
@@ -356,7 +356,7 @@ const Tutors = () => {
             </tbody>
           </table>
         </div>
-        <div className="student-pagination">
+        <div className="tutor-pagination">
           <span className="paginate" onClick={() => handlePagination("dec")}>
             <ChevronLeftIcon />
           </span>

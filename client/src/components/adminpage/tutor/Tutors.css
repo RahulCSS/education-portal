@@ -240,7 +240,7 @@ td.center {
     text-align: center;
   }
 
-.student-pagination{
+.tutor-pagination{
     display: flex;
     align-items: center;
     gap:1rem;
@@ -259,7 +259,7 @@ td.center {
     height:2rem;
 }
 
-.student-pagination svg{
+.tutor-pagination svg{
     width:2rem;
     height:2rem;
 }
