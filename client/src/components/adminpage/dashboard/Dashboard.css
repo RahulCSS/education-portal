@@ -1,6 +1,80 @@
 .dashboard-container{
-    margin:1.5rem;
+    padding:2rem;
+    background-color: var(--snoopywhite-color);
+    border-radius: 15px;
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.dashboard{
     padding:1rem;
     background-color: var(--snowwhite-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    overflow: hidden;
     border-radius: 15px;
+}
+
+.counts{
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 100px;
+    gap:1rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: var(--snoopywhite-color);
+}
+
+.counts > span{
+    width:4rem;
+    height:4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.counts span > svg{
+    width:2rem;
+    height:2rem;
+    color: var(--white-color);
+}
+
+.counts > div {
+    width:80%;
+}
+
+.counts div > span {
+    font-size: 2rem;
+}
+
+.counter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-count{
+
+}
+
+.studentcount > span:first-child {
+    background-color: var(--blueresult-color);
+}
+
+.tutorcount > span:first-child{
+    background-color: var(--darkblue-color);
+}
+
+.coursecount > span:first-child{
+    background-color: var(--redresult-color);
+}
+
+.enrollmentcount > span:first-child{
+    background-color: var(--greenresult-color);
 }

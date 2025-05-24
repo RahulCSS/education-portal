@@ -146,6 +146,30 @@ const signupTutor = async (req,res) => {
     }
 };
 
+
+// Get all count
+const getCount = async (req,res) => {
+    
+    const studentCount = await userModel.countDocuments({role:'Student'});
+    const tutorCount = await userModel.countDocuments({role:'Tutor'});
+    const courseCount = await courseModel.countDocuments();
+    const enrollmentCount = 0;
+
+    try{
+        const count = {
+            students: studentCount,
+            tutors: tutorCount,
+            courses: courseCount,
+            enrollments: enrollmentCount,
+        };
+        return res.status(200).json({ success: true, data: count });
+    }catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Error fetching students" });
+    }
+}
+
+
 module.exports = {
-    getStudents, getTutors, getCourses, signupTutor
+    getStudents, getTutors, getCourses, signupTutor, getCount
 };

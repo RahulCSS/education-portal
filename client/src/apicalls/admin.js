@@ -45,3 +45,14 @@ export const GetCourses = async (payload) => {
         return err;
     }
 };
+
+// Get Count
+export const GetCount = async () => {
+    try{
+        const response = await axiosInstance.get("/user/get-count");
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};
