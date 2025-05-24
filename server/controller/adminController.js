@@ -1,3 +1,4 @@
+const courseModel = require("../model/courseModel");
 const userModel = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 
@@ -62,19 +63,47 @@ const getTutors = async (req,res) => {
     const totalPages = Math.ceil(total / limitNum);
 
     try{
-        const students = await userModel
+        const tutors = await userModel
             .find({role: 'Tutor'})
             .select("fullname email phone createdAt address.state")
             .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
             .skip((pageNum - 1) * limitNum)
             .limit(limitNum);
-        return res.status(200).json({ success: true, data: students, totalpages:totalPages });
+        return res.status(200).json({ success: true, data: tutors, totalpages:totalPages });
     }catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: "Error fetching students" });
     }
 }
 
+// Get all Tutors
+const getCourses = async (req,res) => {
+    const {
+        page = 1,
+        limit = 5,
+        sortBy = 'fullname',
+        sortOrder = 'asc',
+        search = ''
+      } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    
+    const total = await courseModel.countDocuments();
+    const totalPages = Math.ceil(total / limitNum);
+
+    try{
+        const courses = await courseModel
+            .find()
+            .select("title description price tutor createdAt")
+            .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
+            .skip((pageNum - 1) * limitNum)
+            .limit(limitNum);
+        return res.status(200).json({ success: true, data: courses, totalpages:totalPages });
+    }catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Error fetching students" });
+    }
+}
 
 // Register a new user
 const signupTutor = async (req,res) => {
@@ -118,5 +147,5 @@ const signupTutor = async (req,res) => {
 };
 
 module.exports = {
-    getStudents, getTutors, signupTutor
+    getStudents, getTutors, getCourses, signupTutor
 };

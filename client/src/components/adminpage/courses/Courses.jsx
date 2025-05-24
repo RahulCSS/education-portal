@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import "./Courses.css";
-import { GetCourses, GetTutors, } from "../../../apicalls/admin";
+import { GetCourses, GetTutors } from "../../../apicalls/admin";
+import { AddCourse } from "../../../apicalls/course";
 import { showToast } from "../../../store/toastSlice";
 import { useDispatch } from "react-redux";
 import {
@@ -123,6 +124,8 @@ const Courses = () => {
                 isprice: false,
                 istutor: false,
               });
+              getTutors();
+              getCourses();
           }else{
               dispatch(showToast({ message: `${response.message}`, type: 'info' }));
           }
@@ -323,7 +326,7 @@ const Courses = () => {
                             <td>{course.title}</td>
                             <td>{course.description}</td>
                             <td>{course.price}</td>
-                            <td>{course.tutor}</td>
+                           <td>{allTutors.find((tutor) => tutor._id === course.tutor)?.fullname || "Unknown Tutor"}</td>
                             <td>{formatMonthYear(course.createdAt)}</td>
                           </tr>
                         ))

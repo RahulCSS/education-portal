@@ -34,3 +34,14 @@ export const SignupTutor = async (payload) => {
         return err;
     }
 };
+
+// Get Courses
+export const GetCourses = async (payload) => {
+    try{
+        const response = await axiosInstance.get("/user/get-courses",payload);
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};

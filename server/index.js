@@ -3,6 +3,7 @@ const cors = require ('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 const userRoute = require('./route/userRoute');
+const courseRoute = require('./route/courseRoute');
 const authRoute = require('./route/authRoute');
 const uploadRoute = require('./route/uploadRoute');
 
@@ -39,5 +40,6 @@ app.listen(port,() => {
 
 // API routes
 app.use('/user', userRoute);
+app.use('/course', courseRoute);
 app.use('/auth', authRoute);
 app.use('/upload', uploadRoute);

@@ -6,7 +6,6 @@ dotenv.config();
 const activityMiddleware = async (req, res, next) => {
     const token = req.cookies.access_token;
     const decoded = jwt.verify(token, process.env.JWT_SECRET_ACCESS_TOKEN);
-    console.log(decoded);
     try{
         const session = await sessionModel.findOne({user: req.user.id});
         const now = new Date();
