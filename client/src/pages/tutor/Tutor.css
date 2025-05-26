@@ -1,0 +1,244 @@
+.admin-container{
+    display: flex;
+    flex-direction: column;
+    width:100vw;
+    height: 100vh;
+}
+
+.admin-grid{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 6% 94%;
+    grid-template-areas:
+    "sidebar topbar"
+    "sidebar content";
+    flex-grow: 1;
+}
+
+.sidebar{
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--snowwhite-color);
+    padding: 2rem 1rem;
+}
+
+.main-content{
+    background-color: var(--snowwhite-color);
+}
+
+.topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    padding: 0 2rem;
+    background-color: var(--snowwhite-color);
+}
+
+.admin-menu{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+}
+
+.admin-menu span {
+    font-size: 1.2rem;
+}
+
+.admin-menu span svg{
+    cursor: pointer;
+}
+
+/* Dropdown menu container */
+.user-menu {
+    position: absolute;
+    top: 3.25rem; 
+    left: 0.5rem;
+    background-color: var(--snowwhite-color);
+    border: 1px solid var(--ashwhite-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: auto;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 50;
+  }
+  
+  .user-menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  .user-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+ 
+  .user-menu li {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    width: 120px;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--ashwhite-color);
+  }
+  
+  .user-menu li:hover {
+    background-color: var(--ashwhite-color);
+  }
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 1.25rem;  
+    height: 1.25rem;
+}
+
+.icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+  
+.icon.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.icon svg{
+    width:1.25rem;
+    height:1.25rem;
+}
+
+.content{
+    grid-area: content;
+    position: relative;
+    background-color: var(--snoopywhite-color);
+}
+
+.corner {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--snowwhite-color);
+}
+
+.corner.top-left::after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--snoopywhite-color);
+  top: 0;
+  left: 0;
+}
+
+.corner.top-right::after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--snoopywhite-color);
+  top: 0;
+  right: 0;
+}
+
+.corner.bottom-left::after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--snoopywhite-color);
+  bottom: 0;
+  left: 0;
+}
+
+.corner.bottom-right::after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--snoopywhite-color);
+  bottom: 0;
+  right: 0;
+}
+
+.corner.top-left {
+  top: 0;
+  left: 0;
+}
+
+.corner.top-right {
+  top: 0;
+  right: 0;
+}
+
+.corner.bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.corner.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.avatar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-bottom: 2rem;
+}
+
+.avatar svg{
+    width:2rem;
+    height:2rem;
+    color:var(--blueresult-color);
+}
+
+.avatar p {
+    font-size: 2rem;
+    color:var(--blueresult-color);
+    font-weight: 500;
+}
+
+.menu-icon{
+    display:flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.menu-icon a {
+    width: 2rem;
+    height:2rem;
+}
+
+.menu-icon a svg{
+    width:2rem;
+    height:2rem;
+    
+}
+
+.menu-icon span{
+    margin-left: 1rem ;
+    padding: 1rem 0;
+}

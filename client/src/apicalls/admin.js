@@ -36,9 +36,10 @@ export const SignupTutor = async (payload) => {
 };
 
 // Get Courses
-export const GetCourses = async (payload) => {
+export const GetCourses = async (params) => {
     try{
-        const response = await axiosInstance.get("/user/get-courses",payload);
+        const query = new URLSearchParams(params).toString();
+        const response = await axiosInstance.get(`/user/get-courses?${query}`);
         return response.data;
     }catch(error){
         const err = error.response.data;

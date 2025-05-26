@@ -10,3 +10,18 @@ export const AddCourse = async (payload) => {
         return err;
     }
 };
+
+// Get Course by ID
+export const GetCoursebyId = async (payload) => {
+    const { userId, ...params } = payload
+    try{
+        const query = new URLSearchParams(params).toString();
+        const response = await axiosInstance.get("/course/get-course",{
+            params: {...params, userId}
+        });
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};

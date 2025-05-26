@@ -25,7 +25,6 @@ const getStudents = async (req,res) => {
         limit = 5,
         sortBy = 'fullname',
         sortOrder = 'asc',
-        search = ''
       } = req.query;
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
@@ -54,7 +53,6 @@ const getTutors = async (req,res) => {
         limit = 5,
         sortBy = 'fullname',
         sortOrder = 'asc',
-        search = ''
       } = req.query;
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
@@ -76,14 +74,13 @@ const getTutors = async (req,res) => {
     }
 }
 
-// Get all Tutors
+// Get all Courses
 const getCourses = async (req,res) => {
     const {
         page = 1,
         limit = 5,
         sortBy = 'fullname',
         sortOrder = 'asc',
-        search = ''
       } = req.query;
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
