@@ -26,7 +26,7 @@ const Tutor = () => {
   const [lightMode , setLightMode] = useState(true);
   const [ showUserMenu, setShowUserMenu ] = useState(false);
   const usermenuRef = useRef(null);
-  const [selectedMenu, setSelectedMenu] = useState('Dashboard');
+  const [selectedMenu, setSelectedMenu] = useState('Courses');
 
   // Handlers
   const toggleMode = ()=>{

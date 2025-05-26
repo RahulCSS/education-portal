@@ -22,6 +22,7 @@ const moduleSchema = new mongoose.Schema({
     title: { type: String, required: true },
     id: { type: String, required: true, unique: true },
     description: { type: String, default: "" },
+    image_url: {type: String},
     materials: [{
         type: { type: String, enum: ['video', 'pdf','flashCards'] },
         video: { videoSchema },

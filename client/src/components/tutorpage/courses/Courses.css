@@ -259,3 +259,30 @@ td.center {
     width:2rem;
     height:2rem;
 }
+
+
+.actions{
+    text-align: center;
+}
+
+.actions span {
+    display: flex;
+    gap: 1rem;
+}
+
+.actions span svg{
+    width:1.5rem;
+    height:1.5rem;
+}
+
+.actions span svg:first-child{
+    color: var(--blueresult-color);
+}
+
+.actions span svg:last-child{
+    color:var(--redresult-color);
+}
+
+.actions span svg:last-child:hover{
+    stroke:var(--trash-color);
+}

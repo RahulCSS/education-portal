@@ -10,6 +10,8 @@ import {
   CaretSortIcon,
   ReloadIcon,
   PlusIcon,
+  ExternalLinkIcon,
+  TrashIcon,
 } from "@radix-ui/react-icons";
 
 const formatMonthYear = (dateStr) =>
@@ -281,6 +283,7 @@ const Courses = () => {
                     />
                   </span>
                 </th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -296,6 +299,12 @@ const Courses = () => {
                     <td>{course.price}</td>
                     <td>{userName}</td>
                     <td>{formatMonthYear(course.createdAt)}</td>
+                    <td className="actions">
+                      <span>
+                        <ExternalLinkIcon />
+                        <TrashIcon />
+                      </span>
+                    </td>
                   </tr>
                 ))
               )}
