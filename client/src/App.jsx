@@ -11,6 +11,8 @@ import Admin from './pages/admin/admin';
 import ProtectedRoute from './route/ProtectedRoute';
 import Tutor from './pages/tutor/Tutor';
 import Student from './pages/student/Student';
+import CourseDetail from './components/tutorpage/course/CourseDetail';
+
 
 const App = () => {
   return (
@@ -30,6 +32,7 @@ const App = () => {
           </Route>
           <Route element={<ProtectedRoute allowedRoles={['Tutor']} />}>
             <Route path="/tutor" element={<Tutor />} />
+            <Route path="/tutor/course/:courseId" element={<CourseDetail />} />
           </Route>
         </Route>
       </Routes>

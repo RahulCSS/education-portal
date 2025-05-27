@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import toastReducer from './toastSlice'
 import userReducer from './userSlice'
 import adminReducer from './adminSlice'
+import courseReducer from './courseSlice'
 
 const persistConfig = {
   key: 'root',
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   toast: toastReducer,
   user: userReducer,
   admin: adminReducer,
+  course: courseReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

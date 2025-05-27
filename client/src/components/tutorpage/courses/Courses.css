@@ -147,7 +147,6 @@
     display: flex;
     align-items: center;
     gap:4rem;
-    
 }
 
 .catalogue{
@@ -273,6 +272,7 @@ td.center {
 .actions span svg{
     width:1.5rem;
     height:1.5rem;
+    cursor: pointer;
 }
 
 .actions span svg:first-child{

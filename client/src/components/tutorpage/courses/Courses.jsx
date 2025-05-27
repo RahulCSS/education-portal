@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Courses.css";
-import { GetCoursebyId } from "../../../apicalls/course";
+import { GetCoursebyTutorId } from "../../../apicalls/course";
 import { AddCourse } from "../../../apicalls/course";
 import { showToast } from "../../../store/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import {
   ExternalLinkIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router";
 
 const formatMonthYear = (dateStr) =>
   new Date(dateStr).toLocaleDateString("en-US", {
@@ -22,6 +23,7 @@ const formatMonthYear = (dateStr) =>
 
 const Courses = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = useSelector((state) => state.user.id);
   const userName = useSelector((state) => state.user.fullname);
 
@@ -104,6 +106,11 @@ const Courses = () => {
     }
   };
 
+  const handleNavigate = (e, courseId) => {
+    e.stopPropagation();
+    navigate(`/tutor/course/${courseId}`);
+  };
+
   // Handles submission of formdata
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,7 +148,7 @@ const Courses = () => {
       userId: userId,
     };
     try {
-      const response = await GetCoursebyId(payload);
+      const response = await GetCoursebyTutorId(payload);
       if (response.success === true) {
         setAllCourses(response.data);
         setTotalPages(response.totalpages == 0 ? 1 : response.totalpages);
@@ -301,7 +308,7 @@ const Courses = () => {
                     <td>{formatMonthYear(course.createdAt)}</td>
                     <td className="actions">
                       <span>
-                        <ExternalLinkIcon />
+                        <ExternalLinkIcon onClick={(e) => handleNavigate(e, course._id)} />
                         <TrashIcon />
                       </span>
                     </td>

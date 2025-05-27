@@ -23,8 +23,8 @@ const addCourse = async (req,res) => {
     }
 }
 
-// Get Courses by Id
-const getCoursebyId = async (req,res) => {
+// Get Courses by Tutor Id
+const getCoursebyTutorId = async (req,res) => {
     const {
         page = 1,
         limit = 5,
@@ -51,6 +51,18 @@ const getCoursebyId = async (req,res) => {
     }
 }
 
+// Get Courses by Id
+const getCoursebyId = async (req,res) => {
+    const { courseId } = req.params;
+    try{
+        const courses = await courseModel.findById(courseId);
+        return res.status(200).json({ success: true, data: courses });
+    }catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Error fetching students" });
+    }
+}
+
 module.exports = {
-    addCourse, getCoursebyId
+    addCourse, getCoursebyTutorId, getCoursebyId
 }
