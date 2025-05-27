@@ -130,6 +130,33 @@
     transition: all 0.3s ease;
 }
 
+.file-input-form{
+    
+}
+
+.file-input-label{
+    border: 1px solid var(--ashwhite-color);
+    padding: 0.25rem 1rem;
+
+}
+
+.file-input{
+    display: none;
+}
+
+.image-preview {
+    margin-left: 170px;
+    max-width: 150px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+
 .add-course-form button:hover{
     background-color: var(--bluetoast-color);
     border: 1px solid var(--darkblue-color);

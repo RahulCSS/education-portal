@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const courseSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, default: "" },
-    image_url: {type: String},
+    imageUrl: {type: String},
     price: { type: Number, default: 0 },
     modules: [{ type: mongoose.Schema.Types.ObjectId, ref: "Module" }],
     tutor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

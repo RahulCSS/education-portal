@@ -27,9 +27,20 @@ export const GetCoursebyTutorId = async (payload) => {
 
 
 // Get Course by  ID
-export const GetCoursebyId = async (courseId) => {
+export const GetCoursebyId = async (id) => {
     try{
-        const response = await axiosInstance.get(`/course/get-course-by-Id/${courseId}`);
+        const response = await axiosInstance.get(`/course/get-course-by-Id/${id}`);
+        return response.data;
+    }catch(error){
+        const err = error.response.data;
+        return err;
+    }
+};
+
+// Delete Course
+export const DeleteCourse = async (id) => {
+    try{
+        const response = await axiosInstance.delete(`/course/delete-course/${id}`,);
         return response.data;
     }catch(error){
         const err = error.response.data;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Courses.css";
 import { GetCoursebyTutorId } from "../../../apicalls/course";
-import { AddCourse } from "../../../apicalls/course";
+import { AddCourse, DeleteCourse } from "../../../apicalls/course";
+import { UploadImage } from "../../../apicalls/upload";
 import { showToast } from "../../../store/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,7 +35,8 @@ const Courses = () => {
     title: "",
     description: "",
     price: "",
-    tutor: "",
+    tutor: userId,
+    imageUrl:"",
   });
   const [isFocused, setIsFocused] = useState({
     istitle: false,
@@ -111,9 +113,46 @@ const Courses = () => {
     navigate(`/tutor/course/${courseId}`);
   };
 
+  const handleDelete = async (courseId) => {
+    try {
+      const response = await DeleteCourse(courseId);
+      if (response.success) {
+        dispatch(showToast({ message: "Course deleted successfully", type: "success" }));
+        getCourses();
+      } else {
+        dispatch(showToast({ message: data.message, type: "error" }));
+      }
+    } catch (error) {
+      dispatch(showToast({ message: error.message, type: "error" }));
+    }
+  }
+
   // Handles submission of formdata
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formDataImage = new FormData();
+    formDataImage.append("image", file);
+
+    try{
+      const response = await UploadImage(formDataImage);
+
+      if (response.success) {
+        dispatch(showToast({ message: "Image uploaded", type: "success" }));
+        setFormData((prev) => ({
+          ...prev,
+          imageUrl: response.data.secure_url,
+        }));
+        } else {
+          dispatch(showToast({ message: data.message, type: "error" }));
+        }
+    } catch (error) {
+      dispatch(showToast({ message: error.message, type: "error" }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    formData.tutor = userId;
     try {
       const response = await AddCourse(formData);
       if (response.success === true) {
@@ -125,6 +164,7 @@ const Courses = () => {
           description: "",
           price: "",
           tutor: "",
+          imageUrl:""
         });
         setIsFocused({
           istitle: false,
@@ -227,6 +267,22 @@ const Courses = () => {
                     Price
                   </label>
                 </div>
+                <div className="course-form file-input-form">
+                  <label htmlFor="course-image" className="file-input-label">Upload Image </label>
+                  <input
+                    id="course-image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="file-input"
+                  />
+                  {formData.imageUrl && (
+                    <div className="image-preview">
+                      <img src={formData.imageUrl} alt="Course Preview" />
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="course-form-section">
                 <div className="course-form">
@@ -309,7 +365,7 @@ const Courses = () => {
                     <td className="actions">
                       <span>
                         <ExternalLinkIcon onClick={(e) => handleNavigate(e, course._id)} />
-                        <TrashIcon />
+                        <TrashIcon onClick={() => handleDelete(course._id)}/>
                       </span>
                     </td>
                   </tr>

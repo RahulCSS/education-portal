@@ -1,7 +1,7 @@
 const courseModel = require("../model/courseModel");
 
 const addCourse = async (req,res) => {
-    const {title,description,price,tutor} = req.body;
+    const {title,description,price,tutor,imageUrl} = req.body;
     try{
         // 1. Check if all required fields are provided
         if(!title || !description || !price || !tutor){
@@ -14,7 +14,8 @@ const addCourse = async (req,res) => {
             description,
             price,
             tutor,
-        });
+            imageUrl,
+            });
         await newCourse.save();
         return res.status(201).json({ success: true, message: "Course added successfully" });
     }catch (error) {
@@ -53,9 +54,9 @@ const getCoursebyTutorId = async (req,res) => {
 
 // Get Courses by Id
 const getCoursebyId = async (req,res) => {
-    const { courseId } = req.params;
+    const { id } = req.params;
     try{
-        const courses = await courseModel.findById(courseId);
+        const courses = await courseModel.findById(id);
         return res.status(200).json({ success: true, data: courses });
     }catch (error) {
         console.error(error);
@@ -63,6 +64,17 @@ const getCoursebyId = async (req,res) => {
     }
 }
 
+// Delete Course
+const deleteCourse = async (req, res) => {
+  try {
+    const courseId = req.params.id;
+    const deletion = await courseModel.findByIdAndDelete(courseId);
+    return res.status(200).json({ success: true, message: "Course deleted" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: `Error: ${error.message}` });
+  }
+};
+
 module.exports = {
-    addCourse, getCoursebyTutorId, getCoursebyId
+    addCourse, getCoursebyTutorId, getCoursebyId, deleteCourse
 }
