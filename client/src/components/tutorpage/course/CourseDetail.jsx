@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import './CourseDetail.css'
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { GetCoursebyId } from "../../../apicalls/course";
 import {
   AvatarIcon,
   RowsIcon,
@@ -14,6 +13,8 @@ import { LogoutUser } from "../../../apicalls/user";
 import { showToast } from "../../../store/toastSlice";
 import { clearUser } from "../../../store/userSlice";
 import { useNavigate } from "react-router";
+import { GetCoursebyId } from "../../../apicalls/course";
+
 
 const formatMonthYear = (dateStr) =>
   new Date(dateStr).toLocaleDateString("en-US", {
@@ -33,7 +34,6 @@ const CourseDetail = () => {
    const [formData, setFormData] = useState({
       title: "",
       description: "",
-      price: "",
       tutor: userId,
       imageUrl:"",
       videoUrl:""
@@ -41,8 +41,6 @@ const CourseDetail = () => {
     const [isFocused, setIsFocused] = useState({
       istitle: false,
       isemail: false,
-      isprice: false,
-      istutor: false,
     });
 
   // Handlers
@@ -76,26 +74,56 @@ const CourseDetail = () => {
 
   // API
   const handleImageUpload = async (e) => {
-      const file = e.target.files[0];
-      const formDataImage = new FormData();
-      formDataImage.append("image", file);
-  
-      try{
-        const response = await UploadImage(formDataImage);
-  
-        if (response.success) {
-          dispatch(showToast({ message: "Image uploaded", type: "success" }));
+      const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: import.meta.env.VITE_REACT_APP_CLOUDINARY_CLOUD_NAME, 
+        uploadPreset: import.meta.env.VITE_REACT_APP_CLOUDINARY_IMAGE_UPLOAD_PRESET,
+        resourceType: "image",
+        sources: ["local", "camera"],
+        multiple: false,
+        maxFileSize: 100000000,
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          dispatch(showToast({ message: "Image uploaded successfully", type: "success" }));
           setFormData((prev) => ({
             ...prev,
-            imageUrl: response.data.secure_url,
+            imageUrl: result.info.secure_url,
           }));
-          } else {
-            dispatch(showToast({ message: data.message, type: "error" }));
-          }
-      } catch (error) {
-        dispatch(showToast({ message: error.message, type: "error" }));
+        } else if (error) {
+          dispatch(showToast({ message: error.message, type: "error" }));
+        }
       }
+    );
+    widget.open();
     };
+  
+  const handleVideoUpload = () => {
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: import.meta.env.VITE_REACT_APP_CLOUDINARY_CLOUD_NAME, 
+        uploadPreset: import.meta.env.VITE_REACT_APP_CLOUDINARY_VIDEO_UPLOAD_PRESET,
+        resourceType: "video",
+        sources: ["local", "camera"],
+        multiple: false,
+        maxFileSize: 100000000,
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          dispatch(showToast({ message: "Video uploaded successfully", type: "success" }));
+          console.log(result.info);
+          setFormData((prev) => ({
+            ...prev,
+            videoUrl: result.info.secure_url,
+          }));
+        } else if (error) {
+          dispatch(showToast({ message: error.message, type: "error" }));
+        }
+      }
+    );
+    widget.open();
+};
+
 
   const handleLogout = async () => {
     if (userId) {
@@ -121,11 +149,11 @@ const CourseDetail = () => {
   };
 
   const handleSubmit = () => {
-
+    console.log(formData);
   }
 
   const fetchCourse = async () => {
-    try {
+        try {
       const response = await GetCoursebyId(courseId);
       if (response.success) {
         setCourse(response.data);
@@ -135,6 +163,7 @@ const CourseDetail = () => {
     } catch (err) {
       dispatch(showToast({ message: err.message, type: "error" }));
     }
+
   };
 
   useEffect(() => {
@@ -254,62 +283,35 @@ const CourseDetail = () => {
                             </div>
                           </div>
                           <div className="course-form-section">
-                            <div className="course-form">
-                              <input
-                                id="price"
-                                name="price"
-                                type="number"
-                                title="Please enter course price"
-                                value={formData.price}
-                                onChange={handleChange}
-                                required
-                              ></input>
-                              <label
-                                className={isFocused.isprice ? "focused" : ""}
-                                htmlFor="price"
-                              >
-                                Price
-                              </label>
-                            </div>
                             <div className="course-form file-input-form">
-                              <label htmlFor="course-image" className="file-input-label">Upload Image </label>
-                              <input
-                                id="course-image"
-                                name="image"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="file-input"
-                              />
+                              <button type="button" onClick={handleImageUpload} className="upload-button">
+                                Upload Image
+                              </button>
                               {formData.imageUrl && (
                                 <div className="image-preview">
-                                  <img src={formData.imageUrl} alt="Course Preview" />
+                                  <img width="100%" src={formData.imageUrl} alt="Course Preview" />
                                 </div>
                               )}
                             </div>
                             <div className="course-form file-input-form">
-                              <label htmlFor="course-image" className="file-input-label">Upload Video </label>
-                              <input
-                                id="course-image"
-                                name="image"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="file-input"
-                              />
-                              {formData.imageUrl && (
-                                <div className="image-preview">
-                                  <img src={formData.imageUrl} alt="Course Preview" />
+                              <button type="button" onClick={handleVideoUpload} className="upload-button">
+                                Upload Video
+                              </button>
+                              {formData.videoUrl && (
+                                <div className="video-preview">
+                                  <video width="100%" controls>
+                                    <source src={formData.videoUrl} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                  </video>
                                 </div>
                               )}
                             </div>
+                            
+                              <div className="course-form">
+                                <button>Add New Module</button>
+                              </div>
                           </div>
                           
-                          <div className="course-form-section">
-                            <div className="course-form">
-                              <button>Add New Module</button>
-                            </div>
-                          </div>
                         </form>
                       </div>
                     </div>

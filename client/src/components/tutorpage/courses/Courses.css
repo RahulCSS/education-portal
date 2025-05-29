@@ -33,7 +33,7 @@
 }
 
 .add-course-details:hover {
-  height: 240px; 
+  height: 320px; 
 }
 
 .add-course{
@@ -70,7 +70,7 @@
 }
 
 .add-course-details:focus-within {
-  height: 240px;
+  height: 320px;
 }
 
 .add-course-details:focus-within .add-course-form {
@@ -144,10 +144,7 @@
     display: none;
 }
 
-.image-preview {
-    margin-left: 170px;
-    max-width: 150px;
-}
+
 
 .image-preview img {
   width: 100%;
